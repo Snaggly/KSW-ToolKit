@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/id7_sys_factory_bg"
+    android:focusable="false"
+    tools:context=".gui.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/topMenuTabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/topMenuTabs"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="64dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/soundRestorerPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:textColor="@color/main_btn_text_selector"
+                android:background="@drawable/btn_selector"
+                app:backgroundTint="@color/main_btn_selector"
+                android:focusedByDefault="true"
+                android:text="@string/toolkit" />
+
+            <Button
+                android:id="@+id/eventManagerPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:enabled="false"
+                android:textColor="@color/main_btn_text_selector"
+                android:background="@drawable/btn_selector"
+                app:backgroundTint="@color/main_btn_selector"
+                android:text="@string/event_manager_btntext" />
+
+            <Button
+                android:id="@+id/systemTweaksPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:enabled="false"
+                android:textColor="@color/main_btn_text_selector"
+                android:background="@drawable/btn_selector"
+                app:backgroundTint="@color/main_btn_selector"
+                android:text="@string/system_tweaks_btntext" />
+
+            <Button
+                android:id="@+id/mcuListenerPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:enabled="false"
+                android:textColor="@color/main_btn_text_selector"
+                android:background="@drawable/btn_selector"
+                app:backgroundTint="@color/main_btn_selector"
+                android:text="@string/mcu_listener" />
+
+            <Button
+                android:id="@+id/configPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:enabled="false"
+                android:background="@drawable/btn_selector"
+                android:text="@string/import_export_config"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
+
+            <Button
+                android:id="@+id/adbShellPaneBtn"
+                android:layout_width="370dp"
+                android:layout_height="69dp"
+                android:textColor="@color/main_btn_text_selector"
+                android:background="@drawable/btn_selector"
+                app:backgroundTint="@color/main_btn_selector"
+                android:text="@string/adb_shell_btntext" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/tabFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/topMenuTabs"
+        app:layout_constraintTop_toTopOf="@+id/topMenuTabs" />
+</androidx.constraintlayout.widget.ConstraintLayout>

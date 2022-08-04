@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mcuSourcesList">
+        <item>KSW-Logcat</item>
+        <item>/dev/ttyMSM0</item>
+        <item>/dev/ttyMSM1</item>
+        <item>/dev/ttyS0</item>
+        <item>/dev/ttyS1</item>
+        <item>/dev/ttyS2</item>
+        <item>/dev/ttyS3</item>
+    </string-array>
+</resources>
