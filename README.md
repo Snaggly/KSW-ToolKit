@@ -6,14 +6,15 @@ KSW-ToolKit is an extension to your KSW Android screen. Once the service is inst
 
 ...in short KSW-ToolKit
 ## Features:
-[*] Rich customizability
-[*] Remapping of your hardware buttons
-[*] Automatic Day/Night switching
-[*] Auto Volume
-[*] Sound Restorer to keep sound running on OEM side
-[*] Enables extra hardware buttons*
-[*] Built in ADB Shell to manipulate and have more control over your Android
-[*] And much more to discover...
+* Rich customizability
+* Remapping of your hardware buttons
+* Automatic Day/Night switching
+* Auto Volumes
+* Sound Restorer to keep sound running on OEM side
+* Enables extra hardware buttons*
+* Built in ADB Shell to manipulate and have more control over your Android
+* And much more to discover...
+
 *This is the "Media-Button Hack". It will depend on the car and MCU model you have. In BMWs for example this hack will allow the Tel and Media/CD button on your iDrive to also get triggered as Phone and MODE event in Android. Check MCU Listener if this hack works for you.
 
 ## Installation:
@@ -29,9 +30,9 @@ Contributions of any sorts is highly welcome! To contribute open a new pull requ
 
 ## Credits
 
-[McuCommunicator](https://github.com/KswCarProject/McuCommunicator) - To communicate to Mcu
-[AdbLib](https://github.com/cgutman/AdbLib) - To access the Adb shell
+* [McuCommunicator](https://github.com/KswCarProject/McuCommunicator) - To communicate to Mcu
+* [AdbLib](https://github.com/cgutman/AdbLib) - To access the Adb shell
 
 ## License
 
-[GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
+* [GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
