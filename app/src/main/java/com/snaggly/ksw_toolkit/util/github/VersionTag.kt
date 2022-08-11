@@ -30,6 +30,25 @@ data class VersionTag(
 
             return VersionTag(m, n, h, i, tag_name)
         }
+
+        fun isNewerVersionAvailable(installedVersion: VersionTag, githubVersion: VersionTag) : Boolean {
+            if (githubVersion.majorVersion > installedVersion.majorVersion) {
+                return true
+            }
+            else if (githubVersion.majorVersion >= installedVersion.majorVersion &&
+                githubVersion.minorVersion > installedVersion.minorVersion) {
+                return true
+            }
+            else if (githubVersion.majorVersion >= installedVersion.majorVersion &&
+                githubVersion.minorVersion >= installedVersion.minorVersion &&
+                githubVersion.hotfixVersion > installedVersion.hotfixVersion) {
+                return true
+            }
+            else return githubVersion.majorVersion >= installedVersion.majorVersion &&
+                    githubVersion.minorVersion >= installedVersion.minorVersion &&
+                    githubVersion.hotfixVersion >= installedVersion.hotfixVersion &&
+                    githubVersion.iteration > installedVersion.iteration
+        }
     }
 
     override fun toString(): String {

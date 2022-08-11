@@ -100,31 +100,4 @@ class ToolKitViewModel(application: Application) : AndroidViewModel(application)
              Toast.makeText(context, context.resources.getText(R.string.could_not_check_service), Toast.LENGTH_LONG).show()
          }
     }
-
-    fun getGitHubRelease() : GitHubRelease {
-        val url = URL("https://api.github.com/repos/Snaggly/KSW-ToolKit-Service/releases/latest")
-        val connection = url.openConnection() as HttpURLConnection
-        connection.connectTimeout = 5000
-
-        return Gson().fromJson(BufferedReader(InputStreamReader(connection.inputStream)), GitHubRelease::class.java)
-    }
-
-    fun isNewerVersionAvailable(installedVersion: VersionTag, githubVersion: VersionTag) : Boolean {
-        if (githubVersion.majorVersion > installedVersion.majorVersion) {
-            return true
-        }
-        else if (githubVersion.majorVersion >= installedVersion.majorVersion &&
-                githubVersion.minorVersion > installedVersion.minorVersion) {
-            return true
-        }
-        else if (githubVersion.majorVersion >= installedVersion.majorVersion &&
-                githubVersion.minorVersion >= installedVersion.minorVersion &&
-                githubVersion.hotfixVersion > installedVersion.hotfixVersion) {
-            return true
-        }
-        else return githubVersion.majorVersion >= installedVersion.majorVersion &&
-                githubVersion.minorVersion >= installedVersion.minorVersion &&
-                githubVersion.hotfixVersion >= installedVersion.hotfixVersion &&
-                githubVersion.iteration > installedVersion.iteration
-    }
 }

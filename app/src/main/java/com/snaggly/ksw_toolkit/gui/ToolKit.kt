@@ -312,30 +312,18 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                 try {
                     if (isInInstallMode) {
                         if (latestGitHubRelease == null)
-                            latestGitHubRelease = mViewModel.getGitHubRelease()
-                        var assetIndex = -1
-                        for (i in latestGitHubRelease!!.assets.indices) {
-                            if (latestGitHubRelease!!.assets[i].content_type == "application/vnd.android.package-archive") {
-                                assetIndex = i
-                                break
-                            }
-                        }
-                        if (assetIndex >= 0) {
-                            val dc = DownloadController(requireContext(), latestGitHubRelease!!.assets[assetIndex].browser_download_url)
-                            requireActivity().runOnUiThread {
-                                dc.enqueueDownload()
-                            }
+                            latestGitHubRelease = DownloadController.getServiceGitHubRelease()
+                        val dc = DownloadController.draftDownload(requireContext(), latestGitHubRelease)
+                        if (dc != null) {
+                            dc.enqueueDownload()
                         } else {
-                            requireActivity().runOnUiThread {
-                                Toast.makeText(requireContext(), "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
-                                resetStatus()
-                            }
+                            Toast.makeText(requireContext(), "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
                         }
                     } else {
-                        latestGitHubRelease = mViewModel.getGitHubRelease()
+                        latestGitHubRelease = DownloadController.getServiceGitHubRelease()
                         val githubVersion = VersionTag.getVersion(latestGitHubRelease!!.tag_name)
                         val installedVersion = VersionTag.getVersion(versionTextView.text.toString())
-                        if (mViewModel.isNewerVersionAvailable(installedVersion, githubVersion)) {
+                        if (VersionTag.isNewerVersionAvailable(installedVersion, githubVersion)) {
                             requireActivity().runOnUiThread{
                                 newerVersionTextView.text = githubVersion.toString()
                                 Toast.makeText(requireContext(), "New version found! $githubVersion", Toast.LENGTH_LONG).show()
