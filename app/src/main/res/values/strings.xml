@@ -104,4 +104,14 @@
     <string name="hicar_app_button">HiCar App Button</string>
     <string name="hicar_voice_button">HiCar Voice Button</string>
     <string name="application_info">Application Info</string>
+    <string name="tablet_mode">Tablet Mode</string>
+    <string name="error_in_reading_service">Error in reading Service Config</string>
+    <string name="unable_to_open_oem_screen">Unable to open OEM Screen!</string>
+    <string name="unable_to_open_radio_screen">Unable to open Radio Screen!</string>
+    <string name="unable_to_open_f_cam_screen">Unable to open F_CAM Screen!</string>
+    <string name="unable_to_open_aux_screen">Unable to open AUX Screen!</string>
+    <string name="unable_to_open_dvr_screen">Unable to open DVR Screen!</string>
+    <string name="unable_to_open_dvd_screen">Unable to open DVD Screen!</string>
+    <string name="unable_to_open_dtv_screen">Unable to open DTV Screen!</string>
+    <string name="unable_to_close_screen">Unable to close screen!</string>
 </resources>

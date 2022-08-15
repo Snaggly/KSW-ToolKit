@@ -155,7 +155,7 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 startAtBootSwitch.isChecked = mViewModel.getStartAtBootOption()
             } catch (e : Exception) {
-                Toast.makeText(requireContext(), "Error in reading Service Config\n$e", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "${requireActivity().resources.getText(R.string.error_in_reading_service)}\n$e", Toast.LENGTH_LONG).show()
             }
             startAtBootSwitch.visibility = View.VISIBLE
             startAtBootSwitchText.text = getString(R.string.start_at_boot)
@@ -202,8 +202,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openOEMScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open OEM Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_oem_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -212,8 +212,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openRadioScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open Radio Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_radio_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -222,8 +222,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openFCamScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open F_CAM Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_f_cam_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -232,8 +232,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openAuxScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open AUX Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_aux_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -242,8 +242,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openDvrScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open DVR Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_dvr_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -252,8 +252,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openDvdScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open DVD Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_dvr_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -262,8 +262,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.openDtvScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to open DTV Screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_open_dtv_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -272,8 +272,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 mViewModel.closeScreen()
             } catch (exception: Exception) {
-                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Unable to close screen!\n\n$exception").create()
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("${requireActivity().resources.getText(R.string.app_name)}")
+                        .setMessage("${requireActivity().resources.getText(R.string.unable_to_close_screen)}\n\n$exception").create()
                 alertExc.show()
             }
         }
@@ -317,7 +317,9 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                         if (dc != null) {
                             dc.enqueueDownload()
                         } else {
-                            Toast.makeText(requireContext(), "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
+                            requireActivity().runOnUiThread {
+                                Toast.makeText(requireContext(), "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
+                            }
                         }
                     } else {
                         latestGitHubRelease = DownloadController.getServiceGitHubRelease()

@@ -14,7 +14,7 @@ class EventManagerViewModel(application: Application) : AndroidViewModel(applica
     fun getConfig() : HashMap<EventManagerTypes, EventManager>? {
         val configJson = coreServiceClient?.coreService?.config
         return if (configJson != null) {
-            ConfigManager.getConfigFromJson(coreServiceClient?.coreService?.config!!).eventManagers
+            ConfigManager.getConfigFromJson(configJson).eventManagers
         } else {
             null
         }

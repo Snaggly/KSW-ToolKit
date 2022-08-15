@@ -5,27 +5,12 @@ import android.content.Context
 import android.provider.Settings
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.Observer
-import com.google.gson.Gson
-import com.snaggly.ksw_toolkit.IKSWToolKitService
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.config.ConfigManager
-import com.snaggly.ksw_toolkit.core.config.beans.SystemOptions
-import com.snaggly.ksw_toolkit.core.service.adb.AdbServiceConnection
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import com.snaggly.ksw_toolkit.core.service.helper.ServiceAliveCheck
-import com.snaggly.ksw_toolkit.util.adb.AdbManager
-import com.snaggly.ksw_toolkit.util.adb.ShellObserver
-import com.snaggly.ksw_toolkit.util.github.GitHubRelease
-import com.snaggly.ksw_toolkit.util.github.VersionTag
 import projekt.auto.mcu.ksw.serial.collection.McuCommands
 import projekt.auto.mcu.ksw.serial.enums.SOUND_SRC_TYPE
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ToolKitViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -81,7 +66,7 @@ class ToolKitViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private fun sendCommand(cmdType: Int, data: ByteArray) {
-        coreServiceClient!!.coreService!!.sendMcuCommand(cmdType, data)
+        coreServiceClient?.coreService?.sendMcuCommand(cmdType, data)
     }
 
     fun setStartAtBootOption(value: Boolean) {

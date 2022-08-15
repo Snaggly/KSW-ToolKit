@@ -138,7 +138,8 @@ class MainActivity : AppCompatActivity() {
             if (it == null)
                 return@registerForActivityResult
             try {
-                mainViewModel.importSettings(this, coreServiceClient, it)
+                val service = coreServiceClient.coreService ?: throw Exception("Service object missing")
+                mainViewModel.importSettings(this, service, it)
             }
             catch (e: Exception) {
                 runOnUiThread {
@@ -150,7 +151,8 @@ class MainActivity : AppCompatActivity() {
             if (it == null)
                 return@registerForActivityResult
             try {
-                mainViewModel.exportSettings(this, coreServiceClient, it)
+                val service = coreServiceClient.coreService ?: throw Exception("Service object missing")
+                mainViewModel.exportSettings(this, service, it)
             }
             catch (e: Exception) {
                 runOnUiThread {
@@ -225,7 +227,9 @@ class MainActivity : AppCompatActivity() {
                         if (dc != null) {
                             dc.enqueueDownload()
                         } else {
-                            Toast.makeText(this, "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
+                            runOnUiThread {
+                                Toast.makeText(this, "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                 } else {

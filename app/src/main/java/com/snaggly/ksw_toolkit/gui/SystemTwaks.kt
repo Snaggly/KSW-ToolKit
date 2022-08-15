@@ -31,6 +31,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var nightBrightnessToggle: SwitchCompat
     private lateinit var nightBrightnessSeekBar: SeekBar
     private lateinit var extraBtnHandleToggleTxt: TextView
+    private lateinit var tabletModeToggle: SwitchCompat
+    private lateinit var tabletModeToggleTxt: TextView
 
     private var settingsBool = BooleanArray(10)
 
@@ -73,6 +75,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         nightBrightnessToggle = requireView().findViewById(R.id.nightBrightnessToggle)
         nightBrightnessSeekBar = requireView().findViewById(R.id.nightBrightnessSeekBar)
         extraBtnHandleToggleTxt = requireView().findViewById(R.id.extraBtnHandleToggleTxt)
+        tabletModeToggle = requireView().findViewById(R.id.tabletModeToggle)
+        tabletModeToggleTxt = requireView().findViewById(R.id.tabletModeToggleTxt)
     }
 
     private fun setSettings() {
@@ -84,18 +88,19 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         nightBrightnessToggle.isChecked = viewModel.getConfig()?.nightBrightness ?: false
         nightBrightnessSeekBar.progress = coreServiceClient.coreService?.nightBrightnessSetting ?: 0
         if (sharedPref != null) {
-            hideTopBarSwitch.isChecked = sharedPref!!.getBoolean("HideTopBar", false)
-            shrinkTopBarSwitch.isChecked = sharedPref!!.getBoolean("ShrinkTopBar", false)
+            hideTopBarSwitch.isChecked = sharedPref?.getBoolean("HideTopBar", false)?:false
+            shrinkTopBarSwitch.isChecked = sharedPref?.getBoolean("ShrinkTopBar", false)?:false
         }
+        tabletModeToggle.isChecked = viewModel.getConfig()?.tabletMode ?: false
 
-        settingsBool[0] = viewModel.getConfig()?.startAtBoot!!
-        settingsBool[1] = viewModel.getConfig()?.hijackCS!!
+        settingsBool[0] = viewModel.getConfig()?.startAtBoot ?: false
+        settingsBool[1] = viewModel.getConfig()?.hijackCS ?: true
         settingsBool[2] = soundRestorerToggle.isChecked
         settingsBool[3] = autoThemeToggle.isChecked
         settingsBool[4] = autoVolumeSwitch.isChecked
         settingsBool[5] = maxVolumeOnBootSwitch.isChecked
-        settingsBool[6] = viewModel.getConfig()?.logMcuEvent!!
-        settingsBool[7] = viewModel.getConfig()?.interceptMcuCommand!!
+        settingsBool[6] = viewModel.getConfig()?.logMcuEvent ?: true
+        settingsBool[7] = viewModel.getConfig()?.interceptMcuCommand ?: true
         settingsBool[8] = extraBtnHandleToggle.isChecked
         settingsBool[9] = nightBrightnessToggle.isChecked
     }
@@ -236,5 +241,17 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
             }
         })
+
+        tabletModeToggle.setOnClickListener {
+            viewModel.getConfig()?.tabletMode = (it as SwitchCompat).isChecked
+
+            try {
+                coreServiceClient.coreService?.tabletMode = it.isChecked
+            } catch (exception: Exception) {
+                val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
+                    .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
+                alertExc.show()
+            }
+        }
     }
 }
