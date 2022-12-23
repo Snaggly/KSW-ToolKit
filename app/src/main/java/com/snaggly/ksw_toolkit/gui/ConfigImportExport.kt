@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.gui.viewmodels.ConfigImportExportViewModel
+import com.snaggly.ksw_toolkit.util.adb.AdbManager
 
 class ConfigImportExport(private val getContent: ActivityResultLauncher<String>,
                          private val createDocument: ActivityResultLauncher<String>) : Fragment() {
@@ -45,36 +46,31 @@ class ConfigImportExport(private val getContent: ActivityResultLauncher<String>,
 
     private fun initBtnClicks() {
         importConfigBtn.setOnClickListener {
-
-            getContent.launch("*/*")
             try {
-                //Toast.makeText(requireContext(), "Imported from: ${importExportViewModel.importConfig()}", Toast.LENGTH_LONG).show()
+                getContent.launch("*/*")
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-Config")
-                        .setMessage("Unable to import!\n\n${exception.stackTrace}").create()
-                //alertExc.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION)
+                        .setMessage("Unable to import!\n\n$exception").create()
                 alertExc.show()
             }
         }
+
         exportConfigBtn.setOnClickListener {
-
-            createDocument.launch("KSW-ToolKit.json")
             try {
-                //Toast.makeText(requireContext(), "Exported to: ${importExportViewModel.exportConfig()}", Toast.LENGTH_LONG).show()
+                createDocument.launch("KSW-ToolKit.json")
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-Config")
-                        .setMessage("Unable to export!\n\n${exception.stackTrace}").create()
-                //alertExc.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION)
+                        .setMessage("Unable to export!\n\n$exception").create()
                 alertExc.show()
             }
         }
+
         restartBtn.setOnClickListener {
             try {
-                importExportViewModel.restartSystem(requireContext())
+                AdbManager.sendCommand("reboot", requireContext())
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-Config")
                         .setMessage("Unable to restart!\n\n${exception.stackTrace}").create()
-                //alertExc.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION)
                 alertExc.show()
             }
         }

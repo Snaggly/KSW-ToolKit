@@ -38,7 +38,7 @@ class KSWSettings(val context: Context) {
     }
 
     private fun checkIfHiddenApiPolicyIsSet() : Boolean {
-        return Settings.Global.getInt(context.contentResolver, "hidden_api_policy", 0) == 1;
+        return Settings.Global.getInt(context.contentResolver, "hidden_api_policy", 0) == 1
     }
 
     fun getSettingsInt(setting : String) : Int {

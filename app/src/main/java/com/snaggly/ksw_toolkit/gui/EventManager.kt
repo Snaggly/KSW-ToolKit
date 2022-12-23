@@ -126,7 +126,7 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
         setOnClickEvent(hiCarVoiceBtn, EventManagerTypes.HiCarVoiceButton)
     }
 
-    private fun setBtnLabel(button: Button, eventManagerTypes: EventManagerTypes) {
+    private fun setBtnLabel(button: Button, eventManagerTypes: EventManagerTypes?) {
         if (mViewModel.getConfig()?.get(eventManagerTypes) != null && mViewModel.getConfig()?.get(eventManagerTypes)?.eventMode != EventMode.NoAssignment)
             button.text = getString(R.string.assigned)
         else
@@ -137,7 +137,7 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
         setBtnLabel(button, types)
         button.setOnClickListener {
             if (hasOpenedSelectAction)
-                previousBtn?.let { setBtnLabel(it, previousTypes!!) }
+                previousBtn?.let { setBtnLabel(it, previousTypes) }
             previousBtn = button
             previousTypes = types
             hasOpenedSelectAction = true

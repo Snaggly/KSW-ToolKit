@@ -21,82 +21,105 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/mainInfoBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_baseline_info_24"
+        android:backgroundTint="@color/main_info_btn_selector"
+        android:layout_marginStart="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        android:contentDescription="@string/application_info" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/upperScrollGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.135"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightScrollGuideLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.29" />
+
     <ScrollView
         android:id="@+id/topMenuTabs"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="64dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/rightScrollGuideLine"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toTopOf="@+id/upperScrollGuideLine">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/soundRestorerPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:textColor="@color/main_btn_text_selector"
                 android:background="@drawable/btn_selector"
-                app:backgroundTint="@color/main_btn_selector"
                 android:focusedByDefault="true"
-                android:text="@string/toolkit" />
+                android:text="@string/toolkit"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
 
             <Button
                 android:id="@+id/eventManagerPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:enabled="false"
-                android:textColor="@color/main_btn_text_selector"
                 android:background="@drawable/btn_selector"
-                app:backgroundTint="@color/main_btn_selector"
-                android:text="@string/event_manager_btntext" />
+                android:enabled="false"
+                android:text="@string/event_manager_btntext"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
 
             <Button
                 android:id="@+id/systemTweaksPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:enabled="false"
-                android:textColor="@color/main_btn_text_selector"
                 android:background="@drawable/btn_selector"
-                app:backgroundTint="@color/main_btn_selector"
-                android:text="@string/system_tweaks_btntext" />
+                android:enabled="false"
+                android:text="@string/system_tweaks_btntext"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
 
             <Button
                 android:id="@+id/mcuListenerPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:enabled="false"
-                android:textColor="@color/main_btn_text_selector"
                 android:background="@drawable/btn_selector"
-                app:backgroundTint="@color/main_btn_selector"
-                android:text="@string/mcu_listener" />
+                android:enabled="false"
+                android:text="@string/mcu_listener"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
 
             <Button
                 android:id="@+id/configPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:enabled="false"
                 android:background="@drawable/btn_selector"
+                android:enabled="false"
                 android:text="@string/import_export_config"
                 android:textColor="@color/main_btn_text_selector"
                 app:backgroundTint="@color/main_btn_selector" />
 
             <Button
                 android:id="@+id/adbShellPaneBtn"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 android:layout_height="69dp"
-                android:textColor="@color/main_btn_text_selector"
                 android:background="@drawable/btn_selector"
-                app:backgroundTint="@color/main_btn_selector"
-                android:text="@string/adb_shell_btntext" />
+                android:text="@string/adb_shell_btntext"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
 
         </LinearLayout>
     </ScrollView>
@@ -107,6 +130,8 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/topMenuTabs"
-        app:layout_constraintTop_toTopOf="@+id/topMenuTabs" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/rightScrollGuideLine"
+        app:layout_constraintTop_toTopOf="@+id/topMenuTabs"
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.snaggly.ksw_toolkit.util.github
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,8 +10,13 @@ import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
 import androidx.core.content.FileProvider
+import com.google.gson.Gson
 import com.snaggly.ksw_toolkit.BuildConfig
+import java.io.BufferedReader
 import java.io.File
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
 //Taken from example in https://androidwave.com/download-and-install-apk-programmatically/
 class DownloadController(private val context: Context, private val url: String) {
@@ -20,6 +26,35 @@ class DownloadController(private val context: Context, private val url: String) 
         private const val MIME_TYPE = "application/vnd.android.package-archive"
         private const val PROVIDER_PATH = ".provider"
         private const val APP_INSTALL_PATH = "\"application/vnd.android.package-archive\""
+
+        fun getServiceGitHubRelease() : GitHubRelease {
+            return getRelease(URL("https://api.github.com/repos/Snaggly/KSW-ToolKit-Service/releases/latest"))
+        }
+
+        fun getClientGitHubRelease() : GitHubRelease {
+            return getRelease(URL("https://api.github.com/repos/Snaggly/KSW-ToolKit/releases/latest"))
+        }
+
+        fun draftDownload(context: Context, latestGitHubRelease : GitHubRelease?) : DownloadController? {
+            var assetIndex = -1
+            for (i in latestGitHubRelease!!.assets.indices) {
+                if (latestGitHubRelease.assets[i].content_type == "application/vnd.android.package-archive") {
+                    assetIndex = i
+                    break
+                }
+            }
+            return if (assetIndex >= 0) {
+                DownloadController(context, latestGitHubRelease.assets[assetIndex].browser_download_url)
+            } else {
+                null
+            }
+        }
+
+        private fun getRelease(url: URL) : GitHubRelease{
+            val connection = url.openConnection() as HttpURLConnection
+            connection.connectTimeout = 5000
+            return Gson().fromJson(BufferedReader(InputStreamReader(connection.inputStream)), GitHubRelease::class.java)
+        }
     }
     fun enqueueDownload() {
         var destination = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString() + "/"

@@ -12,5 +12,7 @@ class SystemOptions(
     var extraMediaButtonHandle: Boolean?,
     var nightBrightness: Boolean?,
     var nightBrightnessLevel: Int?,
-    var mcuPath: String?
+    var mcuPath: String?,
+    var tabletMode: Boolean?,
+    var hideStartMessage: Boolean?
 )
