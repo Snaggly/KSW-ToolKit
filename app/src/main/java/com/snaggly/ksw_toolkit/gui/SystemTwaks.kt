@@ -9,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.GridLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.snaggly.ksw_toolkit.R
@@ -19,7 +21,6 @@ import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import com.snaggly.ksw_toolkit.gui.viewmodels.SystemTwaksViewModel
 
 class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
-
     private lateinit var viewModel: SystemTwaksViewModel
     private lateinit var hideTopBarSwitch: SwitchCompat
     private lateinit var hideTopBarTxt: TextView
@@ -55,9 +56,11 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         autoThemeToggle.requestFocus()
         if (Build.VERSION.SDK_INT >= 30) {
             hideTopBarSwitch.isChecked = false
-            hideTopBarTxt.setTextAppearance(R.style.disabledSwitchTextStyle)
+            hideTopBarSwitch.isGone = true
+            hideTopBarTxt.isGone = true
             shrinkTopBarSwitch.isChecked = false
-            shrinkTopBarTxt.setTextAppearance(R.style.disabledSwitchTextStyle)
+            shrinkTopBarSwitch.isGone = true
+            shrinkTopBarTxt.isGone = true
         }
     }
 
@@ -121,19 +124,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         settingsBool[10] = hideStartMessageToggle.isChecked
     }
 
-    private fun isTopBarFuncEnabledAndroid(): Boolean {
-        if (Build.VERSION.SDK_INT >= 30) {
-            val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("Cannot turn on")
-                .setMessage("TOPBAR function is not available in Android 11 or later").create()
-            alertExc.show()
-            hideTopBarSwitch.isChecked = false
-            shrinkTopBarSwitch.isChecked = false
-            return false
-        } else {
-            return true
-        }
-    }
-
     private fun initButtonClickEvents() {
         autoThemeToggle.setOnClickListener {
             viewModel.getConfig()?.autoTheme = (it as SwitchCompat).isChecked
@@ -176,15 +166,13 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         hideTopBarSwitch.setOnClickListener {
             try {
-                if (isTopBarFuncEnabledAndroid()) {
-                    if ((it as SwitchCompat).isChecked) {
-                        shrinkTopBarSwitch.isChecked = false
-                        viewModel.hideTopBar()
-                    } else {
-                        viewModel.showTopBar()
-                    }
-                    sharedPref?.edit()?.putBoolean("HideTopBar", it.isChecked)?.apply()
+                if ((it as SwitchCompat).isChecked) {
+                    shrinkTopBarSwitch.isChecked = false
+                    viewModel.hideTopBar()
+                } else {
+                    viewModel.showTopBar()
                 }
+                sharedPref?.edit()?.putBoolean("HideTopBar", it.isChecked)?.apply()
             } catch (exception: Exception) {
                 val alert = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
                     .setMessage("Unable to mess with TopBar!\n\n${exception.stackTrace}").create()
@@ -194,15 +182,13 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         shrinkTopBarSwitch.setOnClickListener {
             try {
-                if (isTopBarFuncEnabledAndroid()) {
-                    if ((it as SwitchCompat).isChecked) {
-                        hideTopBarSwitch.isChecked = false
-                        viewModel.shrinkTopBar()
-                    } else {
-                        viewModel.restoreTopBar()
-                    }
-                    sharedPref?.edit()?.putBoolean("ShrinkTopBar", it.isChecked)?.apply()
+                if ((it as SwitchCompat).isChecked) {
+                    hideTopBarSwitch.isChecked = false
+                    viewModel.shrinkTopBar()
+                } else {
+                    viewModel.restoreTopBar()
                 }
+                sharedPref?.edit()?.putBoolean("ShrinkTopBar", it.isChecked)?.apply()
             } catch (exception: Exception) {
                 val alert = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
                     .setMessage("Unable to mess with TopBar!\n\n${exception.stackTrace}").create()
