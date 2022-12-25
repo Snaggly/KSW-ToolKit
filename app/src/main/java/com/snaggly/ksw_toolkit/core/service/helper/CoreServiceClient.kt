@@ -29,6 +29,7 @@ class CoreServiceClient {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
+            Thread.sleep(100)    // Prevent crashes during service outages
             coreService = null
         }
     }

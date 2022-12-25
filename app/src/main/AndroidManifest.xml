@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.KSWToolKit">
-        <activity android:name=".gui.MainActivity" android:configChanges="uiMode" android:screenOrientation="landscape" android:exported="true">
+        <activity android:name=".gui.MainActivity" android:configChanges="uiMode|density|screenLayout|screenSize|smallestScreenSize"
+            android:screenOrientation="landscape" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
