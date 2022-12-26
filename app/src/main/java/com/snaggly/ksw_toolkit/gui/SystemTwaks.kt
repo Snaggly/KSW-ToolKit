@@ -53,7 +53,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         initElements()
         initButtonClickEvents()
         autoThemeToggle.requestFocus()
-        if (Build.VERSION.SDK_INT >= 30) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             hideTopBarSwitch.isChecked = false
             hideTopBarSwitch.isGone = true
             hideTopBarTxt.isGone = true
