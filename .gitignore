@@ -1,0 +1,7 @@
+.idea/*
+.gradle/*
+build/*
+enigma-backup/*
+app/release/*
+app/debug/*
+app/build/*
