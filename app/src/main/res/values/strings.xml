@@ -105,7 +105,7 @@
     <string name="hicar_voice_button">HiCar Voice Button</string>
     <string name="application_info">Application Info</string>
     <string name="tablet_mode">Tablet Mode</string>
-    <string name="hide_start_message">Hide Start Message</string>
+    <string name="hide_start_message">Hide Startup Message</string>
     <string name="error_in_reading_service">Error in reading Service Config</string>
     <string name="unable_to_open_oem_screen">Unable to open OEM Screen!</string>
     <string name="unable_to_open_radio_screen">Unable to open Radio Screen!</string>
