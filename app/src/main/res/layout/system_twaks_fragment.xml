@@ -11,11 +11,13 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:orientation="vertical">
+
         <GridLayout
+            android:id="@+id/gridLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:columnCount="3">
+            android:columnCount="3"
+            android:orientation="horizontal">
             <!--LinearLayout>
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/startAppAtBootTgl"
@@ -39,72 +41,152 @@
                     style="@style/switchTextStyle"/>
             </LinearLayout-->
             <LinearLayout>
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/autoThemeToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <TextView
+                    style="@style/switchTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/auto_dark_theme"
-                    style="@style/switchTextStyle"/>
+                    android:text="@string/auto_dark_theme" />
             </LinearLayout>
+
             <LinearLayout>
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/autoVolumeToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <TextView
+                    style="@style/switchTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/auto_volume"
-                    style="@style/switchTextStyle"/>
+                    android:text="@string/auto_volume" />
             </LinearLayout>
+
             <LinearLayout>
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/maxVolumeAtBootToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <TextView
+                    style="@style/switchTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/set_max_volume_at_boot"
-                    style="@style/switchTextStyle"/>
+                    android:text="@string/set_max_volume_at_boot" />
             </LinearLayout>
+
             <LinearLayout>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/soundRestorerToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true" />
+
+                <TextView
+                    style="@style/switchTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sound_restorer" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/extraBtnHandleToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true" />
+
+                <TextView
+                    android:id="@+id/extraBtnHandleToggleTxt"
+                    style="@style/switchTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_media_tel_button_handling" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/tabletModeToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="true" />
+
+                <TextView
+                    android:id="@+id/tabletModeToggleTxt"
+                    style="@style/switchTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tablet_mode" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/hideStartMessageToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="true" />
+
+                <TextView
+                    android:id="@+id/hideStartMessageTxt"
+                    style="@style/switchTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/hide_start_message" />
+            </LinearLayout>
+
+            <LinearLayout>
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/hideTopBarToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <TextView
+                    android:id="@+id/hideTopBarTxt"
+                    style="@style/switchTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/hide_topbar"
-                    style="@style/switchTextStyle"/>
+                    android:text="@string/hide_topbar" />
             </LinearLayout>
+
             <LinearLayout>
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/shrinkTopBarToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <TextView
+                    android:id="@+id/shrinkTopBarTxt"
+                    style="@style/switchTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/shrink_topbar"
-                    style="@style/switchTextStyle"/>
+                    android:text="@string/shrink_topbar" />
             </LinearLayout>
-            <LinearLayout>
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/soundRestorerToggle"
-                    android:enabled="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sound_restorer"
-                    style="@style/switchTextStyle"/>
-            </LinearLayout>
+
+
             <!--LinearLayout>
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/logMcuEventsToggle"
@@ -118,61 +200,29 @@
                     style="@style/switchTextStyle"/>
             </LinearLayout-->
         </GridLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <!--androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/interceptMcuCommandsToggle"
-                android:enabled="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/intercept_mcucommmands"
-                style="@style/switchTextStyle"/-->
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/extraBtnHandleToggle"
-                android:enabled="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/extraBtnHandleToggleTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/enable_media_tel_button_handling"
-                style="@style/switchTextStyle"/>
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/tabletModeToggle"
-                android:enabled="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/tabletModeToggleTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tablet_mode"
-                style="@style/switchTextStyle"/>
-        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:paddingHorizontal="10dp"
-            android:layout_marginTop="10dp">
+            android:paddingHorizontal="10dp">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="22sp"
-                    android:text="@string/night_brightness"/>
+                    android:text="@string/night_brightness"
+                    android:textSize="22sp" />
+
                 <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/nightBrightnessToggle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <SeekBar
@@ -184,17 +234,19 @@
                 android:padding="10dp"
                 android:progress="100" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/giveTaskerLogcat"
+                style="@style/normalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="@string/give_tasker_read_logs_permission"
-                style="@style/normalButton"/>
+                android:text="@string/give_tasker_read_logs_permission" />
         </LinearLayout>
     </LinearLayout>
 

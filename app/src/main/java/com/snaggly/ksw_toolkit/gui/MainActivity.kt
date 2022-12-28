@@ -2,9 +2,8 @@ package com.snaggly.ksw_toolkit.gui
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -12,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
@@ -105,7 +105,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+            window.decorView.windowInsetsController?.hide(navigationBars())
         try{
             ServiceAliveCheck.checkIfServiceIsAlive(this)
         }catch (exception : Exception) {

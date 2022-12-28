@@ -11,7 +11,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/purple_200</item>
         <item name="android:windowFullscreen">true</item>
@@ -46,6 +46,10 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="disabledSwitchTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/grey</item>
     </style>
 
     <style name="alertDialogNight" parent="Theme.AppCompat.Dialog.Alert">

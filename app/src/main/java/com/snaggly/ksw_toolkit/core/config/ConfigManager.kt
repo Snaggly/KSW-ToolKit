@@ -29,7 +29,7 @@ class ConfigManager private constructor() {
         }
 
         fun getSettingsBool(serviceConfig: SystemOptions) : BooleanArray {
-            val settingsBool = BooleanArray(10)
+            val settingsBool = BooleanArray(11)
             settingsBool[0] = serviceConfig.startAtBoot!!
             settingsBool[1] = serviceConfig.hijackCS!!
             settingsBool[2] = serviceConfig.soundRestorer!!
@@ -40,6 +40,7 @@ class ConfigManager private constructor() {
             settingsBool[7] = serviceConfig.interceptMcuCommand!!
             settingsBool[8] = serviceConfig.extraMediaButtonHandle!!
             settingsBool[9] = serviceConfig.nightBrightness!!
+            settingsBool[10] = serviceConfig.hideStartMessage!!
             return settingsBool
         }
 

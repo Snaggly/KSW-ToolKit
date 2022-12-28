@@ -50,4 +50,7 @@ interface IKSWToolKitService {
     void setNightBrightness(boolean value);
 
     String getMcuPath();
+
+    boolean gethideStartMessage();
+    void sethideStartMessage(boolean value);
 }

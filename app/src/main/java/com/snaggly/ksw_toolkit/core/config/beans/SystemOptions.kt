@@ -13,5 +13,6 @@ class SystemOptions(
     var nightBrightness: Boolean?,
     var nightBrightnessLevel: Int?,
     var mcuPath: String?,
-    var tabletMode: Boolean?
+    var tabletMode: Boolean?,
+    var hideStartMessage: Boolean?
 )
