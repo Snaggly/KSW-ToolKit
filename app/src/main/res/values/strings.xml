@@ -115,4 +115,5 @@
     <string name="unable_to_open_dvd_screen">Unable to open DVD Screen!</string>
     <string name="unable_to_open_dtv_screen">Unable to open DTV Screen!</string>
     <string name="unable_to_close_screen">Unable to close screen!</string>
+    <string name="enable_usb_debugging">Enable USB debugging in Android developer options</string>
 </resources>

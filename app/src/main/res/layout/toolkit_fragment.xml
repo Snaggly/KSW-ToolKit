@@ -15,14 +15,29 @@
             android:orientation="vertical"
             android:gravity="center_vertical"
             tools:ignore="UselessParent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="20dp"
-                android:text="@string/service_status"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/service_status"
+                    android:textSize="22sp" />
+                <TextView
+                    android:id="@+id/enableUsbDebuggingTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/enable_usb_debugging"
+                    android:textColor="#FF4411"
+                    android:textSize="22sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

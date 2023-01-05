@@ -45,6 +45,7 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var startAtBootSwitch: SwitchCompat
     private lateinit var startAtBootSwitchText: TextView
     private lateinit var newerVersionTextView : TextView
+    private lateinit var enableUsbDebuggingTextView : TextView
 
     private var latestGitHubRelease : GitHubRelease? = null
 
@@ -147,6 +148,9 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                 versionTextView.text = packageInfo.versionName
                 isInInstallMode = false
             }
+            enableUsbDebuggingTextView.visibility = View.GONE
+            if (mViewModel.isAdbDebuggingDisabled(requireContext()))
+                enableUsbDebuggingTextView.visibility = View.VISIBLE
         }
     }
 
@@ -192,6 +196,7 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
         startAtBootSwitch = requireView().findViewById(R.id.startAppAtBootTgl)
         startAtBootSwitchText = requireView().findViewById(R.id.start_at_boot_txt)
         newerVersionTextView = requireView().findViewById(R.id.newerVersionTextView)
+        enableUsbDebuggingTextView = requireView().findViewById(R.id.enableUsbDebuggingTextView)
 
         startStopServiceBtn.requestFocus()
     }
