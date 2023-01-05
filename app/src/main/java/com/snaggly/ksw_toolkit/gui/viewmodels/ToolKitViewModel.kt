@@ -3,6 +3,7 @@ package com.snaggly.ksw_toolkit.gui.viewmodels
 import android.app.Application
 import android.content.Context
 import android.provider.Settings
+import android.provider.Settings.Global.*
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.snaggly.ksw_toolkit.R
@@ -84,5 +85,10 @@ class ToolKitViewModel(application: Application) : AndroidViewModel(application)
          }catch (exception : Exception) {
              Toast.makeText(context, context.resources.getText(R.string.could_not_check_service), Toast.LENGTH_LONG).show()
          }
+    }
+
+    fun isAdbDebuggingDisabled(context: Context) : Boolean {
+        return ((getInt(context.contentResolver, ADB_ENABLED,0) == 0)
+                && (getInt(context.contentResolver, "adb_wifi_enabled", 0) == 0))
     }
 }
