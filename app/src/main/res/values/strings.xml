@@ -116,4 +116,9 @@
     <string name="unable_to_open_dtv_screen">Unable to open DTV Screen!</string>
     <string name="unable_to_close_screen">Unable to close screen!</string>
     <string name="enable_usb_debugging">Enable USB debugging in Android developer options</string>
+    <string name="start_tasker_task">Start Tasker Task</string>
+    <string name="tasker_not_installed">Tasker app not installed</string>
+    <string name="tasker_not_enabled">Tasker disabled by the user</string>
+    <string name="tasker_access_blocked">Tasker external access disabled</string>
+    <string name="tasker_no_permission">Tasker no permitted</string>
 </resources>

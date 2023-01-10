@@ -29,6 +29,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 EventMode.StartApp -> it.value.appName
                 EventMode.McuCommand -> it.value.mcuCommandMode.toString()
                 EventMode.NoAssignment -> ""
+                EventMode.TaskerTask -> it.value.taskerTaskName
             }
             coreServiceClient.changeBtnConfig(it.key.ordinal, it.value.eventMode.ordinal, cmdString)
         }

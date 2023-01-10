@@ -8,6 +8,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.CompoundButton
 import android.widget.RadioButton
+import android.widget.Toast
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,17 +20,21 @@ import com.snaggly.ksw_toolkit.gui.viewmodels.EventManagerSelectActionViewModel
 import com.snaggly.ksw_toolkit.util.adapters.ListTypeAdapter
 import com.snaggly.ksw_toolkit.util.list.eventtype.EventManagerTypes
 import com.snaggly.ksw_toolkit.util.list.eventtype.EventMode
+import net.dinglisch.android.taskerm.TaskerIntent
+import net.dinglisch.android.taskerm.TaskerIntent.Status.*
 
 class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient, private val type: EventManagerTypes, private val actionEvent: EventManager.OnActionResult, val config: com.snaggly.ksw_toolkit.core.config.beans.EventManager?) : Fragment() {
     private lateinit var mViewModel: EventManagerSelectActionViewModel
     private lateinit var listKeyEvents: RecyclerView
     private lateinit var listApps: RecyclerView
     private lateinit var listMcuCommands: RecyclerView
+    private lateinit var listTaskerTasks: RecyclerView
 
     private lateinit var doNothingButton: RadioButton
     private lateinit var invokeKeyButton: RadioButton
     private lateinit var startAppButton: RadioButton
     private lateinit var mcuCommandsButton: RadioButton
+    private lateinit var taskerTaskButton: RadioButton
 
     private lateinit var leaveToTopAnimation : Animation
     private lateinit var leaveToButtomAnimation : Animation
@@ -62,15 +67,18 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
         invokeKeyButton = requireView().findViewById(R.id.invokeKeyeventRadioButton)
         startAppButton = requireView().findViewById(R.id.startAppRadioButton)
         mcuCommandsButton = requireView().findViewById(R.id.sendMcuCommandBtn)
+        taskerTaskButton = requireView().findViewById(R.id.startTaskerTaskBtn)
     }
 
     private fun initLists() {
         listKeyEvents = requireView().findViewById(R.id.availableKeyEventsListView)
         listApps = requireView().findViewById(R.id.availableAppsListView)
         listMcuCommands = requireView().findViewById(R.id.mcuCommandsListView)
+        listTaskerTasks = requireView().findViewById(R.id.taskerTaskListView)
         initRecyclerViews(listKeyEvents, mViewModel.getListKeyEventsAdapter())
         initRecyclerViews(listApps, mViewModel.getAvailableAppsAdapter())
         initRecyclerViews(listMcuCommands, mViewModel.getMcuCommandsAdapter())
+        initRecyclerViews(listTaskerTasks, mViewModel.getAvailableTaskerTaskAdapter())
     }
 
     private fun loadAnimations(duration: Long) {
@@ -116,6 +124,12 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                         listMcuCommands.startAnimation((leaveToTopAnimation))
                         listMcuCommands.visibility = View.GONE
                     }
+                    ActionMode.StartTaskerTask -> {
+                        taskerTaskButton.isChecked = false
+                        listTaskerTasks.clearAnimation()
+                        listTaskerTasks.startAnimation((leaveToTopAnimation))
+                        listTaskerTasks.visibility = View.GONE
+                    }
                     else -> {}
                 }
                 mode = ActionMode.DoNothing
@@ -141,6 +155,12 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                         listMcuCommands.visibility = View.GONE
                         listMcuCommands.startAnimation(leaveToButtomAnimation)
                     }
+                    ActionMode.StartTaskerTask -> {
+                        taskerTaskButton.isChecked = false
+                        listTaskerTasks.clearAnimation()
+                        listTaskerTasks.visibility = View.GONE
+                        listTaskerTasks.startAnimation(leaveToButtomAnimation)
+                    }
                     else -> doNothingButton.isChecked = false
                 }
 
@@ -165,6 +185,13 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                         listMcuCommands.clearAnimation()
                         listMcuCommands.startAnimation(leaveToButtomAnimation)
                         listMcuCommands.visibility = View.GONE
+                        listApps.startAnimation(enterFromTopAnimation)
+                    }
+                    ActionMode.StartTaskerTask -> {
+                        taskerTaskButton.isChecked = false
+                        listTaskerTasks.clearAnimation()
+                        listTaskerTasks.startAnimation(leaveToButtomAnimation)
+                        listTaskerTasks.visibility = View.GONE
                         listApps.startAnimation(enterFromTopAnimation)
                     }
                     else -> {
@@ -196,6 +223,13 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                         listApps.visibility = View.GONE
                         listMcuCommands.startAnimation(enterFromButtomAnimation)
                     }
+                    ActionMode.StartTaskerTask -> {
+                        taskerTaskButton.isChecked = false
+                        listTaskerTasks.clearAnimation()
+                        listTaskerTasks.startAnimation(leaveToButtomAnimation)
+                        listTaskerTasks.visibility = View.GONE
+                        listMcuCommands.startAnimation(enterFromTopAnimation)
+                    }
                     else -> {
                         doNothingButton.isChecked = false
                         listMcuCommands.startAnimation(enterFromTopAnimation)
@@ -206,6 +240,54 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                 mode = ActionMode.SendMcuCommand
             }
         }
+        taskerTaskButton.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
+            if (isChecked) {
+                listTaskerTasks.visibility = View.VISIBLE
+                listTaskerTasks.requestFocus()
+                when (mode) {
+                    ActionMode.InvokeKeyEvent -> {
+                        invokeKeyButton.isChecked = false
+                        listKeyEvents.clearAnimation()
+                        listKeyEvents.startAnimation(leaveToTopAnimation)
+                        listKeyEvents.visibility = View.GONE
+                        listTaskerTasks.startAnimation(enterFromButtomAnimation)
+                    }
+                    ActionMode.StartApp -> {
+                        startAppButton.isChecked = false
+                        listApps.clearAnimation()
+                        listApps.startAnimation(leaveToTopAnimation)
+                        listApps.visibility = View.GONE
+                        listTaskerTasks.startAnimation(enterFromButtomAnimation)
+                    }
+                    ActionMode.SendMcuCommand -> {
+                        mcuCommandsButton.isChecked = false
+                        listMcuCommands.clearAnimation()
+                        listMcuCommands.startAnimation(leaveToTopAnimation)
+                        listMcuCommands.visibility = View.GONE
+                        listTaskerTasks.startAnimation(enterFromButtomAnimation)
+                    }
+                    else -> {
+                        doNothingButton.isChecked = false
+                        listTaskerTasks.startAnimation(enterFromTopAnimation)
+                    }
+                }
+
+                listTaskerTasks.requestFocus()
+                mode = ActionMode.StartTaskerTask
+
+                val taskerStatus: TaskerIntent.Status = TaskerIntent.testStatus(context)
+                when(taskerStatus) {
+                    NotInstalled ->
+                        getText(R.string.tasker_not_installed).toString().showMessage()
+                    NotEnabled ->
+                        getText(R.string.tasker_not_enabled).toString().showMessage()
+                    AccessBlocked ->
+                        getText(R.string.tasker_access_blocked).toString().showMessage()
+                    NoPermission ->
+                        getText(R.string.tasker_no_permission).toString().showMessage()
+                }
+            }
+        }
     }
 
     private fun preselectEvent() {
@@ -213,9 +295,14 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
             EventMode.KeyEvent -> invokeKeyButton.isChecked = true
             EventMode.StartApp -> startAppButton.isChecked = true
             EventMode.McuCommand -> mcuCommandsButton.isChecked = true
+            EventMode.TaskerTask -> taskerTaskButton.isChecked = true
             else -> doNothingButton.isChecked = true
         }
     }
 
-    enum class ActionMode {DoNothing, InvokeKeyEvent, StartApp, SendMcuCommand}
+    enum class ActionMode {DoNothing, InvokeKeyEvent, StartApp, SendMcuCommand, StartTaskerTask}
+
+    fun String.showMessage() {
+        Toast.makeText(context, this, Toast.LENGTH_LONG).show()
+    }
 }
