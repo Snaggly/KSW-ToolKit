@@ -13,15 +13,19 @@ import com.snaggly.ksw_toolkit.util.list.eventtype.EventManagerTypes
 import com.snaggly.ksw_toolkit.util.list.eventtype.EventMode
 import com.snaggly.ksw_toolkit.util.list.keyevent.KeyEvent
 import com.snaggly.ksw_toolkit.util.list.mcu.McuCommandsList
+import com.snaggly.ksw_toolkit.util.list.tasker.TaskerTaskInfo
+import com.snaggly.ksw_toolkit.util.list.tasker.TaskerTaskLister
 
 class EventManagerSelectActionViewModel(application: Application) : AndroidViewModel(application) {
     private var listKeyEventsAdapter : ListTypeAdapter? = null
     private var availableAppsAdapter : ListTypeAdapter? = null
     private var mcuCommandsListAdapter : ListTypeAdapter? = null
+    private var availableTaskerTaskAdapter : ListTypeAdapter? = null
 
     private var keyEvents: ArrayList<KeyEvent>? = null
     private var appsList: ArrayList<AppInfo>? = null
     private var mcuCommandsList: ArrayList<McuCommandsList>? = null
+    private var taskerTaskList: ArrayList<TaskerTaskInfo>? = null
     var config : EventManager? = null
 
     var coreServiceClient : CoreServiceClient? = null
@@ -50,6 +54,16 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
         return 0
     }
 
+    private fun findTaskerTaskFromList(name: String?) : Int{
+        if (name == null)
+            return 0
+        for (i in 0 until taskerTaskList?.size!!) {
+            if (name == taskerTaskList!![i].taskName)
+                return i
+        }
+        return 0
+    }
+
     private fun initKeyEventsAdapter() {
         keyEvents = KeyEvent.getKeyEventList(getApplication<Application>().applicationContext)
         listKeyEventsAdapter = ListTypeAdapter(keyEvents!!, findKeyCodeFromList(config?.keyCode), onKeyCodeClickListener)
@@ -63,6 +77,12 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
     private fun initMcuCommandsListAdapter() {
         mcuCommandsList = McuCommandsList.getMcuCommandsList(getApplication<Application>().applicationContext)
         mcuCommandsListAdapter = ListTypeAdapter(mcuCommandsList!!, config?.mcuCommandMode, onMcuCommandClickListener)
+    }
+
+    private fun initTaskerTaskListAdapter() {
+        taskerTaskList = TaskerTaskLister(getApplication<Application>().applicationContext).getTaskList()
+        availableTaskerTaskAdapter = ListTypeAdapter(taskerTaskList!!, findTaskerTaskFromList
+            (config?.taskerTaskName), onTaskerTaskClickListener)
     }
 
     fun getListKeyEventsAdapter(): ListTypeAdapter {
@@ -83,11 +103,18 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
         return mcuCommandsListAdapter!!
     }
 
+    fun getAvailableTaskerTaskAdapter() : ListTypeAdapter {
+        if (availableTaskerTaskAdapter == null)
+            initTaskerTaskListAdapter()
+        return availableTaskerTaskAdapter!!
+    }
+
     fun resetEvent() {
         config?.eventMode = EventMode.NoAssignment
         config?.keyCode = -1
         config?.appName = ""
         config?.mcuCommandMode = -1
+        config?.taskerTaskName = ""
         coreServiceClient?.coreService?.changeBtnConfig(eventCurType.ordinal, EventMode.NoAssignment.ordinal, "")
     }
 
@@ -97,6 +124,7 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
             config?.keyCode = keyEvents?.get(position)!!.code
             config?.appName = ""
             config?.mcuCommandMode = -1
+            config?.taskerTaskName = ""
             coreServiceClient?.coreService?.changeBtnConfig(eventCurType.ordinal, EventMode.KeyEvent.ordinal, keyEvents?.get(position)!!.code.toString())
             actionEvent.notifyView()
         }
@@ -108,6 +136,7 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
             config?.keyCode = -1
             config?.appName = appsList?.get(position)!!.packageName
             config?.mcuCommandMode = -1
+            config?.taskerTaskName = ""
             coreServiceClient?.coreService?.changeBtnConfig(eventCurType.ordinal, EventMode.StartApp.ordinal, appsList?.get(position)!!.packageName)
             actionEvent.notifyView()
         }
@@ -119,7 +148,22 @@ class EventManagerSelectActionViewModel(application: Application) : AndroidViewM
             config?.keyCode = -1
             config?.appName = ""
             config?.mcuCommandMode = position
+            config?.taskerTaskName = ""
             coreServiceClient?.coreService?.changeBtnConfig(eventCurType.ordinal, EventMode.McuCommand.ordinal, position.toString())
+            actionEvent.notifyView()
+        }
+    }
+
+    private val onTaskerTaskClickListener = object : ListTypeAdapter.OnAppClickListener {
+        override fun onAppClick(position: Int) {
+            config?.eventMode = EventMode.TaskerTask
+            config?.keyCode = -1
+            config?.appName = ""
+            config?.mcuCommandMode = -1
+            config?.taskerTaskName = taskerTaskList?.get(position)!!.taskName
+            coreServiceClient?.coreService?.changeBtnConfig(eventCurType.ordinal,
+                EventMode.TaskerTask.ordinal,
+                taskerTaskList?.get(position)!!.taskName)
             actionEvent.notifyView()
         }
     }

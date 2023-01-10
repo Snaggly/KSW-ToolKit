@@ -11,9 +11,11 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="net.dinglisch.android.tasker.PERMISSION_RUN_TASKS"/>
 
     <queries>
         <package android:name="com.snaggly.wits.ksw_toolkit.service"/>
+        <package android:name="net.dinglisch.android.taskerm" />
     </queries>
 
     <application
