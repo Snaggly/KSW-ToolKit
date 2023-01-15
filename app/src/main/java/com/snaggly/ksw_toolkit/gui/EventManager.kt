@@ -1,5 +1,6 @@
 package com.snaggly.ksw_toolkit.gui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -97,8 +98,15 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
 
     private fun initBtnClick() {
         resetDefaultBtn.setOnClickListener {
-            coreServiceClient.coreService?.setDefaultBtnLayout()
-            initBtnClick()
+            AlertDialog.Builder(activity, R.style.alertDialogNight)
+                .setTitle(R.string.reset_defaults)
+                .setMessage(R.string.reset_default_dialog_message)
+                .setPositiveButton("OK", { dialog, which ->
+                    coreServiceClient.coreService?.setDefaultBtnLayout()
+                    initBtnClick()
+                })
+                .setNegativeButton("CANCEL", null)
+                .show()
         }
         setOnClickEvent(telephoneBtn, EventManagerTypes.TelephoneButton)
         setOnClickEvent(telephonePickUpBtn, EventManagerTypes.TelephoneButtonPickUp)
