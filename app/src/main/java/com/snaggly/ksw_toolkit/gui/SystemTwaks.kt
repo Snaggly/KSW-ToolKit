@@ -74,6 +74,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         sharedPref = requireContext().getSharedPreferences(SystemTwaks::javaClass.name, Context.MODE_PRIVATE)
         viewModel.resetConfig()
         setSettings()
+        nightBrightnessSeekBar.isEnabled = nightBrightnessToggle.isChecked
     }
 
     private fun initElements() {

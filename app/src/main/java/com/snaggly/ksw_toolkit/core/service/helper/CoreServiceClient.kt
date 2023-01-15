@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.os.Looper
 import androidx.lifecycle.Observer
 import com.snaggly.ksw_toolkit.IKSWToolKitService
 import projekt.auto.mcu.encryption.Base64
@@ -29,8 +30,9 @@ class CoreServiceClient {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            Thread.sleep(200)    // Prevent crashes during service outages
-            coreService = null
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
+                coreService = null
+            },200)
         }
     }
 

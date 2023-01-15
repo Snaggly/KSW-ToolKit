@@ -1,6 +1,7 @@
 package com.snaggly.ksw_toolkit.gui
 
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -108,24 +109,28 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                 when (mode) {
                     ActionMode.InvokeKeyEvent -> {
                         invokeKeyButton.isChecked = false
+                        invokeKeyButton.jumpDrawablesToCurrentState()
                         listKeyEvents.clearAnimation()
                         listKeyEvents.startAnimation(leaveToTopAnimation)
                         listKeyEvents.visibility = View.GONE
                     }
                     ActionMode.StartApp -> {
                         startAppButton.isChecked = false
+                        startAppButton.jumpDrawablesToCurrentState()
                         listApps.clearAnimation()
                         listApps.startAnimation((leaveToTopAnimation))
                         listApps.visibility = View.GONE
                     }
                     ActionMode.SendMcuCommand -> {
                         mcuCommandsButton.isChecked = false
+                        mcuCommandsButton.jumpDrawablesToCurrentState()
                         listMcuCommands.clearAnimation()
                         listMcuCommands.startAnimation((leaveToTopAnimation))
                         listMcuCommands.visibility = View.GONE
                     }
                     ActionMode.StartTaskerTask -> {
                         taskerTaskButton.isChecked = false
+                        taskerTaskButton.jumpDrawablesToCurrentState()
                         listTaskerTasks.clearAnimation()
                         listTaskerTasks.startAnimation((leaveToTopAnimation))
                         listTaskerTasks.visibility = View.GONE
@@ -134,7 +139,9 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                 }
                 mode = ActionMode.DoNothing
                 mViewModel.resetEvent()
-                actionEvent.notifyView()
+                android.os.Handler(Looper.getMainLooper()).postDelayed({
+                    actionEvent.notifyView()
+                },250)
             }
         }
         invokeKeyButton.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
@@ -283,8 +290,13 @@ class EventManagerSelectAction(private val coreServiceClient: CoreServiceClient,
                         getText(R.string.tasker_not_enabled).toString().showMessage()
                     AccessBlocked ->
                         getText(R.string.tasker_access_blocked).toString().showMessage()
+
+                    // If I install Tasker after KSW-ToolKit, I get this status because I don't have permission
+                    // But actually the task seems to work, so it is commented out
+                    /*
                     NoPermission ->
                         getText(R.string.tasker_no_permission).toString().showMessage()
+                    */
                 }
             }
         }

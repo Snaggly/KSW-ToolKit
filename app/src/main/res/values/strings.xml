@@ -117,8 +117,9 @@
     <string name="unable_to_close_screen">Unable to close screen!</string>
     <string name="enable_usb_debugging">Enable USB debugging in Android developer options</string>
     <string name="start_tasker_task">Start Tasker Task</string>
-    <string name="tasker_not_installed">Tasker app not installed</string>
+    <string name="tasker_not_installed">Tasker app not found. To install, reinstall KSW-ToolKit</string>
     <string name="tasker_not_enabled">Tasker disabled by the user</string>
     <string name="tasker_access_blocked">Tasker external access disabled</string>
     <string name="tasker_no_permission">Tasker no permitted</string>
+    <string name="reset_default_dialog_message">All ECU EVENT settings are reset to defaults</string>
 </resources>
