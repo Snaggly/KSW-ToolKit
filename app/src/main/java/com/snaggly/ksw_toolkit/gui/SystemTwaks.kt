@@ -34,12 +34,9 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var giveTaskerLogcatPermBtn: Button
     private lateinit var soundRestorerToggle: SwitchCompat
     private lateinit var extraBtnHandleToggle: SwitchCompat
-    private lateinit var nightBrightnessToggle: SwitchCompat
-    private lateinit var nightBrightnessSeekBar: SeekBar
     private lateinit var tabletModeToggle: SwitchCompat
     private lateinit var hideStartMessageToggle: SwitchCompat
     private lateinit var decoupleNAVButtonToggle: SwitchCompat
-    private lateinit var nightBrightnessPercentageTV : TextView
 
     private var sharedPref: SharedPreferences? = null
 
@@ -73,11 +70,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         super.onResume()
         sharedPref = requireContext().getSharedPreferences(SystemTwaks::javaClass.name, Context.MODE_PRIVATE)
         populateSettings()
-        nightBrightnessSeekBar.isEnabled = nightBrightnessToggle.isChecked
-        if (nightBrightnessToggle.isChecked)
-            nightBrightnessPercentageTV.visibility = View.VISIBLE
-        else
-            nightBrightnessPercentageTV.visibility = View.GONE
     }
 
     private fun initElements() {
@@ -91,12 +83,9 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         giveTaskerLogcatPermBtn = requireView().findViewById(R.id.giveTaskerLogcat)
         soundRestorerToggle = requireView().findViewById(R.id.soundRestorerToggle)
         extraBtnHandleToggle = requireView().findViewById(R.id.extraBtnHandleToggle)
-        nightBrightnessToggle = requireView().findViewById(R.id.nightBrightnessToggle)
-        nightBrightnessSeekBar = requireView().findViewById(R.id.nightBrightnessSeekBar)
         tabletModeToggle = requireView().findViewById(R.id.tabletModeToggle)
         hideStartMessageToggle = requireView().findViewById(R.id.hideStartMessageToggle)
         decoupleNAVButtonToggle = requireView().findViewById(R.id.decoupleNAVButtonToggle)
-        nightBrightnessPercentageTV = requireView().findViewById(R.id.nightBrightnessPercentageTV)
     }
 
     @SuppressLint("SetTextI18n")
@@ -108,8 +97,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         maxVolumeOnBootSwitch.isChecked = config.maxVolume ?: false
         soundRestorerToggle.isChecked = config.soundRestorer ?: false
         extraBtnHandleToggle.isChecked = config.extraMediaButtonHandle ?: false
-        nightBrightnessToggle.isChecked = config.nightBrightness ?: false
-        nightBrightnessSeekBar.progress = config.nightBrightnessLevel ?: 0
         if (sharedPref != null) {
             hideTopBarSwitch.isChecked = sharedPref?.getBoolean("HideTopBar", false) ?: false
             shrinkTopBarSwitch.isChecked = sharedPref?.getBoolean("ShrinkTopBar", false) ?: false
@@ -117,7 +104,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         tabletModeToggle.isChecked = config.tabletMode ?: false
         hideStartMessageToggle.isChecked = config.hideStartMessage ?: false
         decoupleNAVButtonToggle.isChecked = config.decoupleNAVBtn?: false
-        nightBrightnessPercentageTV.text = "${config.nightBrightnessLevel ?: 0}%"
     }
 
     private fun initButtonClickEvents() {
@@ -217,43 +203,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
                 alertExc.show()
             }
         }
-
-        nightBrightnessToggle.setOnClickListener {
-            nightBrightnessSeekBar.isEnabled = (it as SwitchCompat).isChecked
-            if (it.isChecked)
-                nightBrightnessPercentageTV.visibility = View.VISIBLE
-            else
-                nightBrightnessPercentageTV.visibility = View.GONE
-
-            try {
-                coreServiceClient.coreService?.nightBrightness = it.isChecked
-            } catch (exception: Exception) {
-                val alertExc =
-                    AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
-                        .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
-                alertExc.show()
-            }
-        }
-
-        nightBrightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            @SuppressLint("SetTextI18n")
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                nightBrightnessPercentageTV.text = "$progress%"
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                try {
-                    coreServiceClient.coreService?.nightBrightnessLevel = nightBrightnessSeekBar.progress
-                } catch (exception: Exception) {
-                    val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
-                        .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
-                    alertExc.show()
-                }
-            }
-        })
 
         tabletModeToggle.setOnClickListener {
             try {

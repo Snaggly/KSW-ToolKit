@@ -140,4 +140,13 @@
     <string name="already_up_to_date">Already up to date!</string>
     <string name="error_reading_url">\"Error in reading URL: \"</string>
     <string name="new_service_version_found">\"New Service version found! \"</string>
+    <string name="enable_time_based_brightness">Enable time based brightness</string>
+    <string name="enable_usb_light_sensor">Enable USB light sensor</string>
+    <string name="sunrise">Sunrise:</string>
+    <string name="sunset">Sunset:</string>
+    <string name="determine_times_automatically">Determine times automatically</string>
+    <string name="daylight_brightness">Daylight Brightness:</string>
+    <string name="daylight_brightness_headlight">Daylight Brightness + Headlight:</string>
+    <string name="night_brightness_headlight">Night Brightness + Headlight:</string>
+    <string name="advanced_brightness">Advanced Brightness</string>
 </resources>

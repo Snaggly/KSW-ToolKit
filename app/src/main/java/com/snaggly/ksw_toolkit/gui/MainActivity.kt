@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainMenuFragment: Fragment
     private var eventManagerFragment: Fragment? = null
     private var systemTweaksFragment: Fragment? = null
+    private var advBrightnessFragment: Fragment? = null
     private var adbShellFragment: Fragment? = null
     private var mcuListenerFragment: Fragment? = null
     private var configFragment: Fragment? = null
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toolKitPane: Button
     private lateinit var eventManagerPane: Button
     private lateinit var systemTweaksPane: Button
+    private lateinit var advBrightnessPane: Button
     private lateinit var adbShellPane: Button
     private lateinit var mcuListenerPane: Button
     private lateinit var configImportExportPane: Button
@@ -72,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                         mainViewModel.initializeServiceOptions(coreServiceClient)
                         eventManagerPane.isEnabled = true
                         systemTweaksPane.isEnabled = true
+                        advBrightnessPane.isEnabled = true
                         mcuListenerPane.isEnabled = true
                         configImportExportPane.isEnabled = true
                     } catch (e : Exception) {
@@ -80,12 +83,14 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     if (previousCallingButton == eventManagerPane
                         || previousCallingButton == systemTweaksPane
+                        || previousCallingButton == advBrightnessPane
                         || previousCallingButton == mcuListenerPane
                         || previousCallingButton == configImportExportPane) {
                         switchFragment(mFragManager, toolKitPane, mainMenuFragment)
                     }
                     eventManagerPane.isEnabled = false
                     systemTweaksPane.isEnabled = false
+                    advBrightnessPane.isEnabled = false
                     mcuListenerPane.isEnabled = false
                     configImportExportPane.isEnabled = false
                     if (serviceAlive) {
@@ -170,6 +175,7 @@ class MainActivity : AppCompatActivity() {
         toolKitPane = findViewById(R.id.soundRestorerPaneBtn)
         eventManagerPane = findViewById(R.id.eventManagerPaneBtn)
         systemTweaksPane = findViewById(R.id.systemTweaksPaneBtn)
+        advBrightnessPane = findViewById(R.id.advancedBrightnessPaneBtn)
         adbShellPane = findViewById(R.id.adbShellPaneBtn)
         mcuListenerPane = findViewById(R.id.mcuListenerPaneBtn)
         configImportExportPane = findViewById(R.id.configPaneBtn)
@@ -188,6 +194,11 @@ class MainActivity : AppCompatActivity() {
             if (systemTweaksFragment == null)
                 systemTweaksFragment = SystemTwaks(coreServiceClient)
             switchFragment(mFragManager, systemTweaksPane, systemTweaksFragment!!)
+        }
+        advBrightnessPane.setOnClickListener {
+            if (advBrightnessFragment == null)
+                advBrightnessFragment = AdvancedBrightness(coreServiceClient)
+            switchFragment(mFragManager, advBrightnessPane, advBrightnessFragment!!)
         }
         adbShellPane.setOnClickListener {
             if (adbShellFragment == null)

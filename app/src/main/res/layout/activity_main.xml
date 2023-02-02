@@ -93,6 +93,16 @@
                 app:backgroundTint="@color/main_btn_selector" />
 
             <Button
+                android:id="@+id/advancedBrightnessPaneBtn"
+                android:layout_width="match_parent"
+                android:layout_height="69dp"
+                android:background="@drawable/btn_selector"
+                android:enabled="false"
+                android:text="@string/advanced_brightness"
+                android:textColor="@color/main_btn_text_selector"
+                app:backgroundTint="@color/main_btn_selector" />
+
+            <Button
                 android:id="@+id/mcuListenerPaneBtn"
                 android:layout_width="match_parent"
                 android:layout_height="69dp"
