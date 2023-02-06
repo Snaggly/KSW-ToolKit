@@ -101,10 +101,10 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
             AlertDialog.Builder(activity, R.style.alertDialogNight)
                 .setTitle(R.string.reset_defaults)
                 .setMessage(R.string.reset_default_dialog_message)
-                .setPositiveButton("OK", { dialog, which ->
+                .setPositiveButton("OK") { _, _ ->
                     coreServiceClient.coreService?.setDefaultBtnLayout()
                     initBtnClick()
-                })
+                }
                 .setNegativeButton("CANCEL", null)
                 .show()
         }

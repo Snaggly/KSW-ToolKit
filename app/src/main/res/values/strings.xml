@@ -121,5 +121,5 @@
     <string name="tasker_not_enabled">Tasker disabled by the user</string>
     <string name="tasker_access_blocked">Tasker external access disabled</string>
     <string name="tasker_no_permission">Tasker no permitted</string>
-    <string name="reset_default_dialog_message">All ECU EVENT settings are reset to defaults</string>
+    <string name="reset_default_dialog_message">All mappings will reset to defaults. Continue?</string>
 </resources>
