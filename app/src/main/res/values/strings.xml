@@ -4,7 +4,7 @@
     <string name="init_volumes_on_boot">Init Volumes on Boot</string>
     <string name="start_on_boot">Start on Boot</string>
     <string name="sound_restorer_btntext">Sound Restorer</string>
-    <string name="event_manager_btntext">Mcu Event Manager</string>
+    <string name="event_manager_btntext">Button Mapping</string>
     <string name="system_tweaks_btntext">System Tweaks</string>
     <string name="adb_shell_btntext">Adb Shell</string>
     <string name="mcu_listener">Mcu Listener</string>
