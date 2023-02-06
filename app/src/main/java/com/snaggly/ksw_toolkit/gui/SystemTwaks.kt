@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.SeekBar
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -33,9 +32,9 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var extraBtnHandleToggle: SwitchCompat
     private lateinit var nightBrightnessToggle: SwitchCompat
     private lateinit var nightBrightnessSeekBar: SeekBar
-    private lateinit var extraBtnHandleToggleTxt: TextView
     private lateinit var tabletModeToggle: SwitchCompat
     private lateinit var hideStartMessageToggle: SwitchCompat
+    private lateinit var decoupleNAVButtonToggle: SwitchCompat
 
     private var settingsBool = BooleanArray(11)
 
@@ -71,7 +70,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         super.onResume()
         sharedPref = requireContext().getSharedPreferences(SystemTwaks::javaClass.name, Context.MODE_PRIVATE)
         viewModel.resetConfig()
-        setSettings()
+        populateSettings()
         nightBrightnessSeekBar.isEnabled = nightBrightnessToggle.isChecked
     }
 
@@ -89,9 +88,10 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         nightBrightnessSeekBar = requireView().findViewById(R.id.nightBrightnessSeekBar)
         tabletModeToggle = requireView().findViewById(R.id.tabletModeToggle)
         hideStartMessageToggle = requireView().findViewById(R.id.hideStartMessageToggle)
+        decoupleNAVButtonToggle = requireView().findViewById(R.id.decoupleNAVButtonToggle)
     }
 
-    private fun setSettings() {
+    private fun populateSettings() {
         autoThemeToggle.isChecked = viewModel.getConfig()?.autoTheme ?: false
         autoVolumeSwitch.isChecked = viewModel.getConfig()?.autoVolume ?: false
         maxVolumeOnBootSwitch.isChecked = viewModel.getConfig()?.maxVolume ?: false
@@ -117,6 +117,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         settingsBool[8] = extraBtnHandleToggle.isChecked
         settingsBool[9] = nightBrightnessToggle.isChecked
         settingsBool[10] = hideStartMessageToggle.isChecked
+
+        decoupleNAVButtonToggle.isChecked = coreServiceClient.coreService?.decoupleNAVBtn?:false
     }
 
     private fun initButtonClickEvents() {
@@ -280,6 +282,17 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
             try {
                 settingsBool[10] = it.isChecked
                 coreServiceClient.coreService?.setOptions(settingsBool)
+            } catch (exception: Exception) {
+                val alertExc =
+                    AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
+                        .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
+                alertExc.show()
+            }
+        }
+
+        decoupleNAVButtonToggle.setOnClickListener {
+            try {
+                coreServiceClient.coreService?.decoupleNAVBtn = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")

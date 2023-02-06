@@ -132,4 +132,6 @@
     <string name="hide_topbar_descpr">Hides Android\'s TopBar by enabling immersive mode in all Apps. Only works in Android 10!</string>
     <string name="shrink_topbar_descpr">Shrinks top bar slightly.</string>
     <string name="night_brightness_descpr">Sets display brightness when headlights turn on.</string>
+    <string name="decouple_nav_button">Decouple NAV Button</string>
+    <string name="decouple_nav_button_descpr">Allow Navigation button to be used in OEM and Android without triggering screen switches.</string>
 </resources>
