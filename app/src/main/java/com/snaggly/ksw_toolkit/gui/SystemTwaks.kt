@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
@@ -22,9 +23,8 @@ import com.snaggly.ksw_toolkit.gui.viewmodels.SystemTwaksViewModel
 class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var viewModel: SystemTwaksViewModel
     private lateinit var hideTopBarSwitch: SwitchCompat
-    private lateinit var hideTopBarTxt: TextView
+    private lateinit var hideTopBarLayout: LinearLayout
     private lateinit var shrinkTopBarSwitch: SwitchCompat
-    private lateinit var shrinkTopBarTxt: TextView
     private lateinit var autoThemeToggle: SwitchCompat
     private lateinit var autoVolumeSwitch: SwitchCompat
     private lateinit var maxVolumeOnBootSwitch: SwitchCompat
@@ -35,7 +35,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var nightBrightnessSeekBar: SeekBar
     private lateinit var extraBtnHandleToggleTxt: TextView
     private lateinit var tabletModeToggle: SwitchCompat
-    private lateinit var tabletModeToggleTxt: TextView
     private lateinit var hideStartMessageToggle: SwitchCompat
 
     private var settingsBool = BooleanArray(11)
@@ -56,10 +55,9 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             hideTopBarSwitch.isChecked = false
             hideTopBarSwitch.isGone = true
-            hideTopBarTxt.isGone = true
+            hideTopBarLayout.isGone = true
             shrinkTopBarSwitch.isChecked = false
             shrinkTopBarSwitch.isGone = true
-            shrinkTopBarTxt.isGone = true
         }
     }
 
@@ -82,17 +80,14 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         autoVolumeSwitch = requireView().findViewById(R.id.autoVolumeToggle)
         maxVolumeOnBootSwitch = requireView().findViewById(R.id.maxVolumeAtBootToggle)
         hideTopBarSwitch = requireView().findViewById(R.id.hideTopBarToggle)
-        hideTopBarTxt = requireView().findViewById(R.id.hideTopBarTxt)
+        hideTopBarLayout = requireView().findViewById(R.id.hideTopBarLayout)
         shrinkTopBarSwitch = requireView().findViewById(R.id.shrinkTopBarToggle)
-        shrinkTopBarTxt = requireView().findViewById(R.id.shrinkTopBarTxt)
         giveTaskerLogcatPermBtn = requireView().findViewById(R.id.giveTaskerLogcat)
         soundRestorerToggle = requireView().findViewById(R.id.soundRestorerToggle)
         extraBtnHandleToggle = requireView().findViewById(R.id.extraBtnHandleToggle)
         nightBrightnessToggle = requireView().findViewById(R.id.nightBrightnessToggle)
         nightBrightnessSeekBar = requireView().findViewById(R.id.nightBrightnessSeekBar)
-        extraBtnHandleToggleTxt = requireView().findViewById(R.id.extraBtnHandleToggleTxt)
         tabletModeToggle = requireView().findViewById(R.id.tabletModeToggle)
-        tabletModeToggleTxt = requireView().findViewById(R.id.tabletModeToggleTxt)
         hideStartMessageToggle = requireView().findViewById(R.id.hideStartMessageToggle)
     }
 

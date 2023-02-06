@@ -122,4 +122,14 @@
     <string name="tasker_access_blocked">Tasker external access disabled</string>
     <string name="tasker_no_permission">Tasker no permitted</string>
     <string name="reset_default_dialog_message">All mappings will reset to defaults. Continue?</string>
+    <string name="auto_dark_theme_descpr">Automatically sets Android to Dark/Light theme when headlights toggle. MCU needs to support headlight detection!</string>
+    <string name="auto_volume_descpr">Adjusts Android\'s media volume depending on current driving speed.</string>
+    <string name="max_volume_at_boot_descpr">Maximizes Android\'s media volume after successful boot.</string>
+    <string name="sound_restorer_descpr">Resets the MCU sound source to Android on every screen switch. This makes it possible to hear Android on OEM screen.</string>
+    <string name="additional_media_btn_handle_descpr">Enables some extra hardware buttons. For example on BMW iDrive the Buttons \"Media\" and \"Tel\" will be enabled on Android side. They will be detected as \"MODE\" and \"PHONE\" respectively.</string>
+    <string name="tablet_mode_descpr">Tweaks system DPI to match that of an Android Tablet device. Allows certain Apps to load up in Tablet UI.</string>
+    <string name="hide_startup_toast_descpr">Hides KSW-ToolKit\'s startup toast after boot.</string>
+    <string name="hide_topbar_descpr">Hides Android\'s TopBar by enabling immersive mode in all Apps. Only works in Android 10!</string>
+    <string name="shrink_topbar_descpr">Shrinks top bar slightly.</string>
+    <string name="night_brightness_descpr">Sets display brightness when headlights turn on.</string>
 </resources>
