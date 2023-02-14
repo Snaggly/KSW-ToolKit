@@ -26,6 +26,7 @@
 -keep class com.snaggly.ksw_toolkit.util.list.eventtype.EventMode {*;}
 -keep class com.snaggly.ksw_toolkit.util.list.keyevent.KeyCode {*;}
 -keep class com.snaggly.ksw_toolkit.util.list.mcu.McuCommandsList {*;}
+-keep class com.snaggly.ksw_toolkit.util.github.** {*;}
 -keep class com.snaggly.ksw_toolkit.IKSWToolKitService {*;}
 -keep class com.snaggly.ksw_toolkit.IMcuListener {*;}
 -keep class projekt.auto.mcu.** {*;}
