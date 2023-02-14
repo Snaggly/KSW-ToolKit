@@ -29,6 +29,7 @@
 -keep class com.snaggly.ksw_toolkit.util.github.** {*;}
 -keep class com.snaggly.ksw_toolkit.IKSWToolKitService {*;}
 -keep class com.snaggly.ksw_toolkit.IMcuListener {*;}
+-keep class net.dinglisch.android.taskerm.** {*;}
 -keep class projekt.auto.mcu.** {*;}
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
