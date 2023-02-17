@@ -23,6 +23,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var viewModel: SystemTwaksViewModel
     private lateinit var hideTopBarSwitch: SwitchCompat
     private lateinit var hideTopBarLayout: LinearLayout
+    private lateinit var shrinkTopBarLayout: LinearLayout
     private lateinit var shrinkTopBarSwitch: SwitchCompat
     private lateinit var autoThemeToggle: SwitchCompat
     private lateinit var autoVolumeSwitch: SwitchCompat
@@ -57,6 +58,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
             hideTopBarLayout.isGone = true
             shrinkTopBarSwitch.isChecked = false
             shrinkTopBarSwitch.isGone = true
+            shrinkTopBarLayout.isGone = true
         }
     }
 
@@ -80,6 +82,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         maxVolumeOnBootSwitch = requireView().findViewById(R.id.maxVolumeAtBootToggle)
         hideTopBarSwitch = requireView().findViewById(R.id.hideTopBarToggle)
         hideTopBarLayout = requireView().findViewById(R.id.hideTopBarLayout)
+        shrinkTopBarLayout = requireView().findViewById(R.id.shrinkTopBarLayout)
         shrinkTopBarSwitch = requireView().findViewById(R.id.shrinkTopBarToggle)
         giveTaskerLogcatPermBtn = requireView().findViewById(R.id.giveTaskerLogcat)
         soundRestorerToggle = requireView().findViewById(R.id.soundRestorerToggle)
