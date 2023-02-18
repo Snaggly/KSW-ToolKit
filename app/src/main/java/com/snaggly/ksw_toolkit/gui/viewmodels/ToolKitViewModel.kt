@@ -71,12 +71,11 @@ class ToolKitViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun setStartAtBootOption(value: Boolean) {
-        if (coreServiceClient != null)
-            ConfigManager.setStartOnBoot(value, coreServiceClient!!)
+        coreServiceClient?.coreService?.startAtBoot = value
     }
 
     fun getStartAtBootOption() : Boolean {
-        return ConfigManager.getStartOnBoot(coreServiceClient)
+        return coreServiceClient?.coreService?.startAtBoot?:false
     }
 
      fun checkService(context: Context) {

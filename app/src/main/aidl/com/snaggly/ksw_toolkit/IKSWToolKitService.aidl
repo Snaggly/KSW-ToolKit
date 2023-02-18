@@ -8,13 +8,13 @@ interface IKSWToolKitService {
     boolean changeBtnConfig(int btnType, int cmdType, String cmdValue);
     void setDefaultBtnLayout();
     String getConfig();
-    boolean setOptions(in boolean[] allSettings);
+    boolean setConfig(String configJson);
     String[] getSettingsTypes();
     boolean setMcuPath(String path);
     boolean registerMcuListener(IMcuListener listener);
     boolean unregisterMcuListener(IMcuListener listener);
-    int getNightBrightnessSetting();
-    void setNightBrightnessSetting(int value);
+    int getNightBrightnessLevel();
+    void setNightBrightnessLevel(int value);
 
     boolean getTabletMode();
     void setTabletMode(boolean value);
@@ -51,8 +51,8 @@ interface IKSWToolKitService {
 
     String getMcuPath();
 
-    boolean gethideStartMessage();
-    void sethideStartMessage(boolean value);
+    boolean getHideStartMessage();
+    void setHideStartMessage(boolean value);
 
     boolean getDecoupleNAVBtn();
     void setDecoupleNAVBtn(boolean value);

@@ -37,8 +37,6 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var hideStartMessageToggle: SwitchCompat
     private lateinit var decoupleNAVButtonToggle: SwitchCompat
 
-    private var settingsBool = BooleanArray(11)
-
     private var sharedPref: SharedPreferences? = null
 
     override fun onCreateView(
@@ -65,13 +63,11 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(SystemTwaksViewModel::class.java)
-        viewModel.coreServiceClient = coreServiceClient
     }
 
     override fun onResume() {
         super.onResume()
         sharedPref = requireContext().getSharedPreferences(SystemTwaks::javaClass.name, Context.MODE_PRIVATE)
-        viewModel.resetConfig()
         populateSettings()
         nightBrightnessSeekBar.isEnabled = nightBrightnessToggle.isChecked
     }
@@ -95,41 +91,26 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     }
 
     private fun populateSettings() {
-        autoThemeToggle.isChecked = viewModel.getConfig()?.autoTheme ?: false
-        autoVolumeSwitch.isChecked = viewModel.getConfig()?.autoVolume ?: false
-        maxVolumeOnBootSwitch.isChecked = viewModel.getConfig()?.maxVolume ?: false
-        soundRestorerToggle.isChecked = viewModel.getConfig()?.soundRestorer ?: false
-        extraBtnHandleToggle.isChecked = viewModel.getConfig()?.extraMediaButtonHandle ?: false
-        nightBrightnessToggle.isChecked = viewModel.getConfig()?.nightBrightness ?: false
-        nightBrightnessSeekBar.progress = coreServiceClient.coreService?.nightBrightnessSetting ?: 0
+        autoThemeToggle.isChecked = coreServiceClient.coreService?.autoTheme ?: false
+        autoVolumeSwitch.isChecked = coreServiceClient.coreService?.autoVolume ?: false
+        maxVolumeOnBootSwitch.isChecked = coreServiceClient.coreService?.maxVolume ?: false
+        soundRestorerToggle.isChecked = coreServiceClient.coreService?.soundRestorer ?: false
+        extraBtnHandleToggle.isChecked = coreServiceClient.coreService?.extraMediaButtonHandle ?: false
+        nightBrightnessToggle.isChecked = coreServiceClient.coreService?.nightBrightness ?: false
+        nightBrightnessSeekBar.progress = coreServiceClient.coreService?.nightBrightnessLevel ?: 0
         if (sharedPref != null) {
             hideTopBarSwitch.isChecked = sharedPref?.getBoolean("HideTopBar", false) ?: false
             shrinkTopBarSwitch.isChecked = sharedPref?.getBoolean("ShrinkTopBar", false) ?: false
         }
-        tabletModeToggle.isChecked = viewModel.getConfig()?.tabletMode ?: false
-        hideStartMessageToggle.isChecked = viewModel.getConfig()?.hideStartMessage ?: false
-
-        settingsBool[0] = viewModel.getConfig()?.startAtBoot ?: false
-        settingsBool[1] = viewModel.getConfig()?.hijackCS ?: true
-        settingsBool[2] = soundRestorerToggle.isChecked
-        settingsBool[3] = autoThemeToggle.isChecked
-        settingsBool[4] = autoVolumeSwitch.isChecked
-        settingsBool[5] = maxVolumeOnBootSwitch.isChecked
-        settingsBool[6] = viewModel.getConfig()?.logMcuEvent ?: true
-        settingsBool[7] = viewModel.getConfig()?.interceptMcuCommand ?: true
-        settingsBool[8] = extraBtnHandleToggle.isChecked
-        settingsBool[9] = nightBrightnessToggle.isChecked
-        settingsBool[10] = hideStartMessageToggle.isChecked
-
+        tabletModeToggle.isChecked = coreServiceClient.coreService?.tabletMode ?: false
+        hideStartMessageToggle.isChecked = coreServiceClient.coreService?.hideStartMessage ?: false
         decoupleNAVButtonToggle.isChecked = coreServiceClient.coreService?.decoupleNAVBtn?:false
     }
 
     private fun initButtonClickEvents() {
         autoThemeToggle.setOnClickListener {
-            viewModel.getConfig()?.autoTheme = (it as SwitchCompat).isChecked
             try {
-                settingsBool[3] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.autoTheme = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -139,10 +120,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         autoVolumeSwitch.setOnClickListener {
-            viewModel.getConfig()?.autoVolume = (it as SwitchCompat).isChecked
             try {
-                settingsBool[4] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.autoVolume = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -152,10 +131,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         maxVolumeOnBootSwitch.setOnClickListener {
-            viewModel.getConfig()?.maxVolume = (it as SwitchCompat).isChecked
             try {
-                settingsBool[5] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.maxVolume = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -207,10 +184,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         soundRestorerToggle.setOnClickListener {
-            viewModel.getConfig()?.soundRestorer = (it as SwitchCompat).isChecked
             try {
-                settingsBool[2] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.soundRestorer = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -220,11 +195,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         extraBtnHandleToggle.setOnClickListener {
-            viewModel.getConfig()?.extraMediaButtonHandle = (it as SwitchCompat).isChecked
-
             try {
-                settingsBool[8] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.extraMediaButtonHandle = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -234,12 +206,10 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         nightBrightnessToggle.setOnClickListener {
-            viewModel.getConfig()?.nightBrightness = (it as SwitchCompat).isChecked
-            nightBrightnessSeekBar.isEnabled = it.isChecked
+            nightBrightnessSeekBar.isEnabled = (it as SwitchCompat).isChecked
 
             try {
-                settingsBool[9] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.nightBrightness = it.isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -250,9 +220,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         nightBrightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                viewModel.getConfig()?.nightBrightnessLevel = progress
                 try {
-                    coreServiceClient.coreService?.nightBrightnessSetting = progress
+                    coreServiceClient.coreService?.nightBrightnessLevel = progress
                 } catch (exception: Exception) {
                     val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                         .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -268,10 +237,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         })
 
         tabletModeToggle.setOnClickListener {
-            viewModel.getConfig()?.tabletMode = (it as SwitchCompat).isChecked
-
             try {
-                coreServiceClient.coreService?.tabletMode = it.isChecked
+                coreServiceClient.coreService?.tabletMode = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -281,10 +248,8 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         hideStartMessageToggle.setOnClickListener {
-            viewModel.getConfig()?.hideStartMessage = (it as SwitchCompat).isChecked
             try {
-                settingsBool[10] = it.isChecked
-                coreServiceClient.coreService?.setOptions(settingsBool)
+                coreServiceClient.coreService?.hideStartMessage = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")

@@ -4,8 +4,10 @@ import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.snaggly.ksw_toolkit.IKSWToolKitService
+import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.config.ConfigManager
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import com.snaggly.ksw_toolkit.util.list.eventtype.EventMode
@@ -20,25 +22,24 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
     fun importSettings(context: Context, coreServiceClient: IKSWToolKitService, uri: Uri) {
         val fileReader = FileReader(context.contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor)
-        val json = fileReader.readLines()
+        val jsonLines = fileReader.readLines()
         fileReader.close()
-        val importedConfig = ConfigManager.getConfigFromJson(json.flatten())
-        importedConfig.eventManagers.forEach {
-            val cmdString = when(it.value.eventMode) {
-                EventMode.KeyEvent -> it.value.keyCode.toString()
-                EventMode.StartApp -> it.value.appName
-                EventMode.McuCommand -> it.value.mcuCommandMode.toString()
-                EventMode.NoAssignment -> ""
-                EventMode.TaskerTask -> it.value.taskerTaskName
-            }
-            coreServiceClient.changeBtnConfig(it.key.ordinal, it.value.eventMode.ordinal, cmdString)
+        if (jsonLines.isEmpty()) {
+            Toast.makeText(context, context.getString(R.string.empty_or_unreadable_file), Toast.LENGTH_SHORT).show()
         }
-        coreServiceClient.setOptions(ConfigManager.getSettingsBool(importedConfig.systemOptions))
-        coreServiceClient.tabletMode = importedConfig.systemOptions.tabletMode?: false
+        val json = jsonLines.flatten()
+        if (json == "") {
+            Toast.makeText(context, context.getString(R.string.empty_or_unreadable_file), Toast.LENGTH_SHORT).show()
+        }
+
+        coreServiceClient.config = json
     }
 
     fun initializeServiceOptions(coreServiceClient: CoreServiceClient) {
-        ConfigManager.initializeServiceOptions(coreServiceClient)
+        if (coreServiceClient.coreService?.hijackCS == false) {
+            coreServiceClient.coreService?.hijackCS = true
+            coreServiceClient.coreService?.setDefaultBtnLayout()
+        }
     }
 
     private fun List<String>.flatten(): String {

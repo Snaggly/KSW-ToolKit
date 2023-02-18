@@ -9,28 +9,6 @@ import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import com.snaggly.ksw_toolkit.util.adb.AdbManager
 
 class SystemTwaksViewModel(application: Application) : AndroidViewModel(application) {
-
-    private var config: SystemOptions? = null
-    var coreServiceClient : CoreServiceClient? = null
-
-    fun resetConfig() {
-        config = null
-        getConfig()
-    }
-
-    fun getConfig() : SystemOptions? {
-        if (config == null) {
-            val configJson = coreServiceClient?.coreService?.config
-            if (configJson != null) {
-                config = ConfigManager.getConfigFromJson(coreServiceClient?.coreService?.config!!).systemOptions
-            } else {
-                return null
-            }
-        }
-
-        return config
-    }
-
     fun shrinkTopBar() {
         AdbManager.sendCommand("wm overscan 0,-9,0,0", getApplication<Application>().applicationContext)
     }

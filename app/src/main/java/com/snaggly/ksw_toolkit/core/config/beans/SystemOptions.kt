@@ -1,18 +1,19 @@
 package com.snaggly.ksw_toolkit.core.config.beans
 
 class SystemOptions(
-    var startAtBoot: Boolean?,
-    var hijackCS: Boolean?,
-    var soundRestorer: Boolean?,
-    var autoTheme: Boolean?,
-    var autoVolume: Boolean?,
-    var maxVolume: Boolean?,
-    var logMcuEvent: Boolean?,
-    var interceptMcuCommand: Boolean?,
-    var extraMediaButtonHandle: Boolean?,
-    var nightBrightness: Boolean?,
-    var nightBrightnessLevel: Int?,
-    var mcuPath: String?,
-    var tabletMode: Boolean?,
-    var hideStartMessage: Boolean?
+    var startAtBoot: Boolean? = false,
+    var hijackCS: Boolean? = false,
+    var soundRestorer: Boolean? = false,
+    var autoTheme: Boolean? = false,
+    var autoVolume: Boolean? = false,
+    var maxVolume: Boolean? = false,
+    var logMcuEvent: Boolean? = true,
+    var interceptMcuCommand: Boolean? = true,
+    var extraMediaButtonHandle: Boolean? = false,
+    var nightBrightness: Boolean? = false,
+    var nightBrightnessLevel: Int? = 65,
+    var mcuPath: String? = "",
+    var tabletMode: Boolean? = false,
+    var hideStartMessage: Boolean? = false,
+    var decoupleNAVBtn: Boolean?
 )

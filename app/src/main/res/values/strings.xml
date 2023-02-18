@@ -134,4 +134,10 @@
     <string name="night_brightness_descpr">Sets display brightness when headlights turn on.</string>
     <string name="decouple_nav_button">Decouple NAV Button</string>
     <string name="decouple_nav_button_descpr">Allow Navigation button to be used in OEM and Android without triggering screen switches.</string>
+    <string name="empty_or_unreadable_file">Empty or unreadable file</string>
+    <string name="unable_to_connect_to_service_now">Unable to connect to service now. Please try again later.</string>
+    <string name="no_apk_found">No APK found! Please download and install manually!</string>
+    <string name="already_up_to_date">Already up to date!</string>
+    <string name="error_reading_url">\"Error in reading URL: \"</string>
+    <string name="new_service_version_found">\"New Service version found! \"</string>
 </resources>
