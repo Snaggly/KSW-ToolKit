@@ -137,7 +137,7 @@
                 android:gravity="center">
                 <LinearLayout
                     android:id="@+id/carInfoBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_car"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -148,7 +148,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/nbt_src_icon_carinfo"
                         android:contentDescription="@string/car_info" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -159,7 +158,7 @@
 
                 <LinearLayout
                     android:id="@+id/radioBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_radio"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -170,7 +169,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_radio_64"
                         android:contentDescription="@string/radio" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -181,7 +179,7 @@
 
                 <LinearLayout
                     android:id="@+id/frontCamBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_front_cam"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -192,7 +190,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_camera_alt_64"
                         android:contentDescription="@string/frontcam" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -203,7 +200,7 @@
 
                 <LinearLayout
                     android:id="@+id/auxBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_aux"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -214,7 +211,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_cable_64"
                         android:contentDescription="@string/aux" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -225,7 +221,7 @@
 
                 <LinearLayout
                     android:id="@+id/dvrBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_dvr"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -236,7 +232,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_videocam_64"
                         android:contentDescription="@string/dvr" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -247,7 +242,7 @@
 
                 <LinearLayout
                     android:id="@+id/dvdBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_dvd"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -258,7 +253,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_settings_input_component_64"
                         android:contentDescription="@string/dvd" />
                     <TextView
                         android:layout_width="wrap_content"
@@ -269,7 +263,7 @@
 
                 <LinearLayout
                     android:id="@+id/dtvBtn"
-                    android:background="@drawable/border_selector"
+                    android:background="@drawable/btn_tv"
                     android:focusable="true"
                     android:clickable="true"
                     android:gravity="center"
@@ -280,7 +274,6 @@
                     <ImageView
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="@drawable/ic_baseline_live_tv_64"
                         android:contentDescription="@string/dtv" />
                     <TextView
                         android:layout_width="wrap_content"
