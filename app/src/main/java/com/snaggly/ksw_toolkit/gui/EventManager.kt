@@ -151,6 +151,7 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
             hasOpenedSelectAction = true
             activeFragment = EventManagerSelectAction(coreServiceClient, types, object : OnActionResult {
                 override fun notifyView() {
+                    mViewModel.reset()
                     setBtnLabel(button, types)
                     childFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.slide_enter_right_left, R.anim.slide_exit_right_left)

@@ -10,11 +10,18 @@ import com.snaggly.ksw_toolkit.util.list.eventtype.EventManagerTypes
 
 class EventManagerViewModel(application: Application) : AndroidViewModel(application) {
     var coreServiceClient : CoreServiceClient? = null
+    private var configJson : String? = null
+
+    fun reset() {
+        configJson = null
+    }
 
     fun getConfig() : HashMap<EventManagerTypes, EventManager>? {
-        val configJson = coreServiceClient?.coreService?.config
+        if (configJson == null) {
+            configJson = coreServiceClient?.coreService?.config
+        }
         return if (configJson != null) {
-            ConfigManager.getConfigFromJson(configJson).eventManagers
+            ConfigManager.getConfigFromJson(configJson!!).eventManagers
         } else {
             null
         }
