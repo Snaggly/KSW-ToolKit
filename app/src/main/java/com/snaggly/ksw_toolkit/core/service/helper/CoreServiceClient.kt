@@ -49,7 +49,12 @@ class CoreServiceClient {
         val intent = Intent()
         intent.component = ComponentName(packageName, className)
         //intent.putExtra("Authentication", s.sign())
-        context.bindService(intent, serviceConnector, Context.BIND_EXTERNAL_SERVICE)
+        try {
+            context.bindService(intent, serviceConnector, Context.BIND_EXTERNAL_SERVICE)
+        }
+        catch (e: java.lang.Exception) {
+            Toast.makeText(context, context.getString(R.string.unable_to_connect_to_service_now), Toast.LENGTH_LONG).show()
+        }
     }
 
     fun disconnectFromService(context : Context) {

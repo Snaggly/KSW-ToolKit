@@ -65,12 +65,12 @@ class MainActivity : AppCompatActivity() {
         coreServiceClient.clientObservers.add {
             runOnUiThread {
                 if (it) {
-                    eventManagerPane.isEnabled = true
-                    systemTweaksPane.isEnabled = true
-                    mcuListenerPane.isEnabled = true
-                    configImportExportPane.isEnabled = true
                     try {
                         mainViewModel.initializeServiceOptions(coreServiceClient)
+                        eventManagerPane.isEnabled = true
+                        systemTweaksPane.isEnabled = true
+                        mcuListenerPane.isEnabled = true
+                        configImportExportPane.isEnabled = true
                     } catch (e : Exception) {
                         Toast.makeText(this@MainActivity, "${resources.getText(R.string.unable_to_initialize_sevice)}\n$e", Toast.LENGTH_LONG).show()
                     }
