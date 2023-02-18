@@ -2,6 +2,9 @@ package com.snaggly.ksw_toolkit.gui
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -224,9 +227,13 @@ class MainActivity : AppCompatActivity() {
                 val installedVersion = VersionTag.getVersion(BuildConfig.VERSION_NAME)
                 if (VersionTag.isNewerVersionAvailable(installedVersion, githubVersion)) {
                     runOnUiThread {
-                        val dc = DownloadController.draftDownload(this, latestGitHubRelease)
+                        val dc = DownloadController.draftDownload(latestGitHubRelease)
                         if (dc != null) {
-                            dc.enqueueDownload()
+                            DownloadController.enqueueDownload(this, dc, object : BroadcastReceiver() {
+                                override fun onReceive(p0: Context?, p1: Intent?) {
+                                    DownloadController.onReceive(p0, this)
+                                }
+                            })
                         } else {
                             runOnUiThread {
                                 Toast.makeText(this, "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()

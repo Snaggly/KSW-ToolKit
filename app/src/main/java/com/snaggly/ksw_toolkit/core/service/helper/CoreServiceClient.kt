@@ -4,10 +4,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.IBinder
 import android.os.Looper
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.snaggly.ksw_toolkit.IKSWToolKitService
+import com.snaggly.ksw_toolkit.R
 import projekt.auto.mcu.encryption.Base64
 import java.security.KeyFactory
 import java.security.PrivateKey
@@ -20,6 +24,16 @@ class CoreServiceClient {
     companion object {
         const val packageName = "com.snaggly.wits.ksw_toolkit.service"
         const val className = "com.snaggly.ksw_toolkit.core.service.CoreService"
+
+        fun getInstalledServiceVersion(context: Context) : String? {
+            val packageInfo : PackageInfo?
+            try {
+                packageInfo = context.packageManager.getPackageInfo(packageName, 0)
+            } catch (e : PackageManager.NameNotFoundException) {
+                return null
+            }
+            return packageInfo.versionName
+        }
     }
 
     val clientObservers = LinkedList<Observer<Boolean>>()

@@ -1,5 +1,11 @@
 package com.snaggly.ksw_toolkit.util.github
 
+import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
+import com.snaggly.ksw_toolkit.BuildConfig
+import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
+
 data class VersionTag(
     val majorVersion: Int,
     val minorVersion: Int,
@@ -29,6 +35,15 @@ data class VersionTag(
             } catch (ignored: Exception) {}
 
             return VersionTag(m, n, h, i, tag_name)
+        }
+
+        fun isNewerServiceVersionAvailable(context: Context, version : VersionTag) : Boolean {
+            val serviceVersion = CoreServiceClient.getInstalledServiceVersion(context) ?: return false
+            return isNewerVersionAvailable(getVersion(serviceVersion), version)
+        }
+
+        fun isNewerClientVersionAvailable(version : VersionTag) : Boolean {
+            return isNewerVersionAvailable(getVersion(BuildConfig.VERSION_NAME), version)
         }
 
         fun isNewerVersionAvailable(installedVersion: VersionTag, githubVersion: VersionTag) : Boolean {

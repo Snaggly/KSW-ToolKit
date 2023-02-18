@@ -84,8 +84,13 @@
                     android:id="@+id/updateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
+                    android:layout_marginStart="20dp"
                     android:text="@string/check_for_updates"/>
+                <ProgressBar
+                    android:id="@+id/progress_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
                 <TextView
                     android:id="@+id/newerVersionTextView"
                     android:layout_width="wrap_content"

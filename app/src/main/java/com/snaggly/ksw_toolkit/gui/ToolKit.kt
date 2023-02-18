@@ -2,8 +2,12 @@ package com.snaggly.ksw_toolkit.gui
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,11 +51,15 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var newerVersionTextView : TextView
     private lateinit var enableUsbDebuggingTextView : TextView
 
-    private var latestGitHubRelease : GitHubRelease? = null
+    private lateinit var progressSpinner : ProgressBar
+
+    private var latestServiceGitHubRelease : GitHubRelease? = null
+    //private var latestClientGitHubRelease : GitHubRelease? = null
 
     private val serviceAliveObserver: Observer<Boolean>
     private val serviceConnectedObserver: Observer<Boolean>
 
+    private var isServiceInstalled = false
     private var isInInstallMode = false
         set(value) {
             field = value
@@ -118,15 +126,14 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
     }
 
     private fun resetStatus() {
-        var packageInfo : PackageInfo? = null
-        try {
-            packageInfo = requireContext().packageManager.getPackageInfo(CoreServiceClient.packageName, 0)
-        } catch (e : PackageManager.NameNotFoundException) { }
+        val serviceVersion = CoreServiceClient.getInstalledServiceVersion(requireContext())
         requireActivity().runOnUiThread {
+            progressSpinner.visibility = View.GONE
             startStopServiceBtn.visibility = View.VISIBLE
             versionTextView.visibility = View.VISIBLE
             versionLiteralTV.visibility = View.VISIBLE
-            if (packageInfo == null) {
+            if (serviceVersion == null) {
+                isServiceInstalled = false
                 startStopServiceBtn.text = resources.getText(R.string.start_service)
                 startStopServiceBtn.visibility = View.GONE
                 runningSymbol.background = ContextCompat.getDrawable(requireContext(),R.mipmap.grey_button)
@@ -136,16 +143,18 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                 isInInstallMode = true
             }
             else if (ServiceRunning) {
+                isServiceInstalled = true
                 startStopServiceBtn.text = resources.getText(R.string.stop_service)
                 runningSymbol.background = ContextCompat.getDrawable(requireContext(),R.mipmap.green_button)
                 runningStatusTextView.text = resources.getText(R.string.running)
-                versionTextView.text = packageInfo.versionName
+                versionTextView.text = serviceVersion.toString()
                 isInInstallMode = false
             } else {
+                isServiceInstalled = true
                 startStopServiceBtn.text = resources.getText(R.string.start_service)
                 runningSymbol.background = ContextCompat.getDrawable(requireContext(),R.mipmap.red_button)
                 runningStatusTextView.text = resources.getText(R.string.inactive)
-                versionTextView.text = packageInfo.versionName
+                versionTextView.text = serviceVersion.toString()
                 isInInstallMode = false
             }
             enableUsbDebuggingTextView.visibility = View.GONE
@@ -197,6 +206,8 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
         startAtBootSwitchText = requireView().findViewById(R.id.start_at_boot_txt)
         newerVersionTextView = requireView().findViewById(R.id.newerVersionTextView)
         enableUsbDebuggingTextView = requireView().findViewById(R.id.enableUsbDebuggingTextView)
+
+        progressSpinner = requireView().findViewById(R.id.progress_spinner)
 
         startStopServiceBtn.requestFocus()
     }
@@ -313,38 +324,51 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         updateBtn.setOnClickListener {
+            progressSpinner.visibility = View.VISIBLE
             Thread {
                 try {
                     if (isInInstallMode) {
-                        if (latestGitHubRelease == null)
-                            latestGitHubRelease = DownloadController.getServiceGitHubRelease()
-                        val dc = DownloadController.draftDownload(requireContext(), latestGitHubRelease)
+                        if (latestServiceGitHubRelease == null)
+                            latestServiceGitHubRelease = DownloadController.getServiceGitHubRelease()
+                        val dc = DownloadController.draftDownload(latestServiceGitHubRelease)
                         if (dc != null) {
-                            dc.enqueueDownload()
+                            DownloadController.enqueueDownload(requireContext(), dc, object : BroadcastReceiver() {
+                                override fun onReceive(context: Context?, intent: Intent?) {
+                                    requireActivity().runOnUiThread{ progressSpinner.visibility = View.GONE}
+                                    DownloadController.onReceive(context, this)
+                                }
+                            })
                         } else {
                             requireActivity().runOnUiThread {
-                                Toast.makeText(requireContext(), "No APK found! Please download and install manually!", Toast.LENGTH_LONG).show()
+                                progressSpinner.visibility = View.GONE
+                                Toast.makeText(requireContext(), getString(R.string.no_apk_found), Toast.LENGTH_LONG).show()
                             }
                         }
                     } else {
-                        latestGitHubRelease = DownloadController.getServiceGitHubRelease()
-                        val githubVersion = VersionTag.getVersion(latestGitHubRelease!!.tag_name)
-                        val installedVersion = VersionTag.getVersion(versionTextView.text.toString())
-                        if (VersionTag.isNewerVersionAvailable(installedVersion, githubVersion)) {
+                        latestServiceGitHubRelease = DownloadController.getServiceGitHubRelease()
+                        val remoteServiceVersion = VersionTag.getVersion(latestServiceGitHubRelease!!.tag_name)
+                        if (VersionTag.isNewerServiceVersionAvailable(requireContext(), remoteServiceVersion)) {
                             requireActivity().runOnUiThread{
-                                newerVersionTextView.text = githubVersion.toString()
-                                Toast.makeText(requireContext(), "New version found! $githubVersion", Toast.LENGTH_LONG).show()
+                                progressSpinner.visibility = View.GONE
+                                newerVersionTextView.text = remoteServiceVersion.toString()
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "${getString(R.string.new_service_version_found)} $remoteServiceVersion",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 isInInstallMode = true
                             }
                         } else {
                             requireActivity().runOnUiThread{
-                                Toast.makeText(requireContext(), "Already up to date!", Toast.LENGTH_LONG).show()
+                                progressSpinner.visibility = View.GONE
+                                Toast.makeText(requireContext(), getString(R.string.already_up_to_date), Toast.LENGTH_LONG).show()
                             }
                         }
                     }
                 } catch (e : Exception) {
                     requireActivity().runOnUiThread {
-                        Toast.makeText(requireContext(), "Error in reading URL: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                        progressSpinner.visibility = View.GONE
+                        Toast.makeText(requireContext(), "${getString(R.string.error_reading_url)}: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                     }
                 }
             }.start()
