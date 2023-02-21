@@ -80,7 +80,7 @@
     <string name="give_tasker_read_logs_permission">Give Tasker READ_LOGS permission</string>
     <string name="intercept_mcucommmands">Intercept McuCommmands</string>
     <string name="enable_media_tel_button_handling">Media-Button Hack</string>
-    <string name="night_brightness">Night Brightness:</string>
+    <string name="night_brightness">Night Brightness</string>
     <string name="sound_restorer">Sound Restorer</string>
     <string name="reset_defaults">Reset Defaults</string>
     <string name="telephone_pickup">Telephone PickUp</string>
@@ -122,7 +122,7 @@
     <string name="tasker_access_blocked">Tasker external access disabled</string>
     <string name="tasker_no_permission">Tasker no permitted</string>
     <string name="reset_default_dialog_message">All mappings will reset to defaults. Continue?</string>
-    <string name="auto_dark_theme_descpr">Automatically sets Android to Dark/Light theme when headlights toggle. MCU needs to support headlight detection!</string>
+    <string name="auto_dark_theme_descpr">Automatically sets Android to Dark/Light theme when headlights toggle. MCU needs to support headlight detection! To determine if your System is compatible, go to MCU listener, turn headlights on and off and check if Light Events show up</string>
     <string name="auto_volume_descpr">Adjusts Android\'s media volume depending on current driving speed.</string>
     <string name="max_volume_at_boot_descpr">Maximizes Android\'s media volume after successful boot.</string>
     <string name="sound_restorer_descpr">Resets the MCU sound source to Android on every screen switch. This makes it possible to hear Android on OEM screen.</string>
@@ -131,7 +131,7 @@
     <string name="hide_startup_toast_descpr">Hides KSW-ToolKit\'s startup toast after boot.</string>
     <string name="hide_topbar_descpr">Hides Android\'s TopBar by enabling immersive mode in all Apps. Only works in Android 10!</string>
     <string name="shrink_topbar_descpr">Shrinks top bar slightly.</string>
-    <string name="night_brightness_descpr">Sets display brightness when headlights turn on.</string>
+    <string name="night_brightness_descpr">Sets display brightness when headlights turn on. MCU needs to support headlight detection! To determine if your System is compatible, go to MCU listener, turn headlights on and off and check if Light Events show up.</string>
     <string name="decouple_nav_button">Decouple NAV Button</string>
     <string name="decouple_nav_button_descpr">Allow Navigation button to be used in OEM and Android without triggering screen switches.</string>
     <string name="empty_or_unreadable_file">Empty or unreadable file</string>
