@@ -36,8 +36,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun initializeServiceOptions(coreServiceClient: CoreServiceClient) {
-        if (coreServiceClient.coreService?.hijackCS == false) {
-            coreServiceClient.coreService?.hijackCS = true
+        if (coreServiceClient.coreService?.systemOptionsController?.hijackCS == false) {
+            coreServiceClient.coreService?.systemOptionsController?.hijackCS = true
             coreServiceClient.coreService?.setDefaultBtnLayout()
         }
     }

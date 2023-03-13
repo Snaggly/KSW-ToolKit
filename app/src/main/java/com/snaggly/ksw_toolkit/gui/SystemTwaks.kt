@@ -109,7 +109,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private fun initButtonClickEvents() {
         autoThemeToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.autoTheme = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.autoTheme = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -120,7 +120,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         autoVolumeSwitch.setOnClickListener {
             try {
-                coreServiceClient.coreService?.autoVolume = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.autoVolume = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -131,7 +131,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         maxVolumeOnBootSwitch.setOnClickListener {
             try {
-                coreServiceClient.coreService?.maxVolume = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.maxVolume = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -184,7 +184,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         soundRestorerToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.soundRestorer = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.soundRestorer = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -195,7 +195,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         extraBtnHandleToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.extraMediaButtonHandle = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.extraMediaButtonHandle = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -206,7 +206,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         tabletModeToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.tabletMode = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.tabletMode = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -217,7 +217,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         hideStartMessageToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.hideStartMessage = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.hideStartMessage = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")
@@ -228,7 +228,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
 
         decoupleNAVButtonToggle.setOnClickListener {
             try {
-                coreServiceClient.coreService?.decoupleNAVBtn = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.decoupleNAVBtn = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")

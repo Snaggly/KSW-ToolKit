@@ -8,15 +8,13 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.SeekBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.snaggly.ksw_toolkit.IAutoTimeListener
+import com.snaggly.ksw_toolkit.IMcuListener
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import java.util.*
@@ -51,21 +49,47 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
         super.onViewCreated(view, savedInstanceState)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
-        enableAdvBrightnessTimeSW.isChecked = coreServiceClient.coreService?.advBri_IsTimeBased?: false
-        enableAdvBrightnessUSBSW.isChecked = coreServiceClient.coreService?.advBri_IsUSBBased?: false
-        sunriseTimeEditText.setText(coreServiceClient.coreService?.advBri_SunriseAt?: "06:00")
-        sunsetTimeEditText.setText(coreServiceClient.coreService?.advBri_SunsetAt?: "20:00")
-        autoTimesCheckBox.isChecked = coreServiceClient.coreService?.advBri_Autotimes?: true
+        val advBriController = coreServiceClient.coreService?.advancedBrightnessController
+        enableAdvBrightnessTimeSW.isChecked = advBriController?.advBri_IsTimeBased?: false
+        enableAdvBrightnessUSBSW.isChecked = advBriController?.advBri_IsUSBBased?: false
+        sunriseTimeEditText.setText(advBriController?.advBri_SunriseAt?: "06:00")
+        sunsetTimeEditText.setText(advBriController?.advBri_SunsetAt?: "20:00")
+        autoTimesCheckBox.isChecked = advBriController?.advBri_Autotimes?: true
+        sunriseTimeEditText.isEnabled = ! autoTimesCheckBox.isChecked
+        sunsetTimeEditText.isEnabled = ! autoTimesCheckBox.isChecked
 
-        dayBrightnessSeekBar.progress = coreServiceClient.coreService?.advBri_DaylightBri?: 100
-        dayBrightnessHLSeekBar.progress = coreServiceClient.coreService?.advBri_DaylightHLBri?: 85
-        nightBrightnessSeekBar.progress = coreServiceClient.coreService?.advBri_NightBri?: 50
-        nightBrightnessHLSeekBar.progress = coreServiceClient.coreService?.advBri_NightHLBri?: 30
+        dayBrightnessSeekBar.progress = advBriController?.advBri_DaylightBri?: 100
+        dayBrightnessHLSeekBar.progress = advBriController?.advBri_DaylightHLBri?: 85
+        nightBrightnessSeekBar.progress = advBriController?.advBri_NightBri?: 50
+        nightBrightnessHLSeekBar.progress = advBriController?.advBri_NightHLBri?: 30
+
+        dayBrightnessPercentageTV.text = "${dayBrightnessSeekBar.progress}%"
+        dayBrightnessHLPercentageTV.text = "${dayBrightnessHLSeekBar.progress}%"
+        nightBrightnessPercentageTV.text = "${nightBrightnessSeekBar.progress}%"
+        nightBrightnessHLPercentageTV.text = "${nightBrightnessHLSeekBar.progress}%"
 
         switchMode()
+
+        advBriController?.registerAutoTimeListener(autoTimeListener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        coreServiceClient.coreService?.advancedBrightnessController?.unregisterAutoTimeListener(autoTimeListener)
+    }
+
+    private val autoTimeListener = object : IAutoTimeListener.Stub() {
+        override fun updateAutoTime(sunrise: String?, sunset: String?) {
+            requireActivity().runOnUiThread {
+                sunrise?.let { sunriseTimeEditText.setText(it) }
+                sunset?.let { sunsetTimeEditText.setText(it) }
+            }
+        }
     }
 
     private fun initElements() {
@@ -99,8 +123,8 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
             enableAdvBrightnessUSBSW.isChecked = !enableAdvBrightnessTimeSW.isChecked
             switchMode()
             try {
-                coreServiceClient.coreService?.advBri_IsTimeBased = enableAdvBrightnessTimeSW.isChecked
-                coreServiceClient.coreService?.advBri_IsUSBBased = !enableAdvBrightnessTimeSW.isChecked
+                coreServiceClient.coreService?.advancedBrightnessController?.advBri_IsTimeBased = enableAdvBrightnessTimeSW.isChecked
+                coreServiceClient.coreService?.advancedBrightnessController?.advBri_IsUSBBased = !enableAdvBrightnessTimeSW.isChecked
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                     .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -112,8 +136,8 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
             enableAdvBrightnessTimeSW.isChecked = !enableAdvBrightnessUSBSW.isChecked
             switchMode()
             try {
-                coreServiceClient.coreService?.advBri_IsUSBBased = enableAdvBrightnessUSBSW.isChecked
-                coreServiceClient.coreService?.advBri_IsTimeBased = !enableAdvBrightnessUSBSW.isChecked
+                coreServiceClient.coreService?.advancedBrightnessController?.advBri_IsUSBBased = enableAdvBrightnessUSBSW.isChecked
+                coreServiceClient.coreService?.advancedBrightnessController?.advBri_IsTimeBased = !enableAdvBrightnessUSBSW.isChecked
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                     .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -130,7 +154,7 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
                 { _, sH, sMin ->
                     sunsetTimeEditText.setText("${String.format("%02d", sH)}:${String.format("%02d", sMin)}")
                     try {
-                        coreServiceClient.coreService?.advBri_SunsetAt = sunsetTimeEditText.text.toString()
+                        coreServiceClient.coreService?.advancedBrightnessController?.advBri_SunsetAt = sunsetTimeEditText.text.toString()
                     } catch (exception: Exception) {
                         val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                             .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -152,7 +176,7 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
                 { _, sH, sMin ->
                     sunriseTimeEditText.setText("${String.format("%02d", sH)}:${String.format("%02d", sMin)}")
                     try {
-                        coreServiceClient.coreService?.advBri_SunriseAt = sunriseTimeEditText.text.toString()
+                        coreServiceClient.coreService?.advancedBrightnessController?.advBri_SunriseAt = sunriseTimeEditText.text.toString()
                     } catch (exception: Exception) {
                         val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                             .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -167,7 +191,9 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
 
         autoTimesCheckBox.setOnClickListener {
             try {
-                coreServiceClient.coreService?.advBri_Autotimes = autoTimesCheckBox.isChecked
+                coreServiceClient.coreService?.advancedBrightnessController?.advBri_Autotimes = autoTimesCheckBox.isChecked
+                sunriseTimeEditText.isEnabled = ! autoTimesCheckBox.isChecked
+                sunsetTimeEditText.isEnabled = ! autoTimesCheckBox.isChecked
             } catch (exception: Exception) {
                 val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                     .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
@@ -177,64 +203,66 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
 
         dayBrightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                dayBrightnessPercentageTV.text = "$progress%"
+                dayBrightnessPercentageTV.text = "${dayBrightnessSeekBar.progress}%"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 try {
-                    coreServiceClient.coreService?.advBri_DaylightBri = progress
+                    coreServiceClient.coreService?.advancedBrightnessController?.advBri_DaylightBri = dayBrightnessSeekBar.progress
                 } catch (exception: Exception) {
                     val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                         .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
                     alertExc.show()
                 }
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
-            override fun onStopTrackingTouch(seekBar: SeekBar?) { }
         })
 
         dayBrightnessHLSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                dayBrightnessHLPercentageTV.text = "$progress%"
+                dayBrightnessHLPercentageTV.text = "${dayBrightnessHLSeekBar.progress}%"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 try {
-                    coreServiceClient.coreService?.advBri_DaylightHLBri = progress
+                    coreServiceClient.coreService?.advancedBrightnessController?.advBri_DaylightHLBri = dayBrightnessHLSeekBar.progress
                 } catch (exception: Exception) {
                     val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                         .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
                     alertExc.show()
                 }
             }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
-            override fun onStopTrackingTouch(seekBar: SeekBar?) { }
         })
 
         nightBrightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                nightBrightnessPercentageTV.text = "$progress%"
+                nightBrightnessPercentageTV.text = "${nightBrightnessSeekBar.progress}%"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 try {
-                    coreServiceClient.coreService?.advBri_NightBri = progress
+                    coreServiceClient.coreService?.advancedBrightnessController?.advBri_NightBri = nightBrightnessSeekBar.progress
                 } catch (exception: Exception) {
                     val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                         .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
                     alertExc.show()
                 }
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
-            override fun onStopTrackingTouch(seekBar: SeekBar?) { }
         })
 
         nightBrightnessHLSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                nightBrightnessHLPercentageTV.text = "$progress%"
+                nightBrightnessHLPercentageTV.text = "${nightBrightnessHLSeekBar.progress}%"
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 try {
-                    coreServiceClient.coreService?.advBri_NightHLBri = progress
+                    coreServiceClient.coreService?.advancedBrightnessController?.advBri_NightHLBri = nightBrightnessHLSeekBar.progress
                 } catch (exception: Exception) {
                     val alertExc = AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit")
                         .setMessage("Could not restart McuReader!\n\n${exception.stackTrace}").create()
                     alertExc.show()
                 }
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) { }
-            override fun onStopTrackingTouch(seekBar: SeekBar?) { }
         })
     }
 }
