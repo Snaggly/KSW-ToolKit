@@ -1,38 +1,34 @@
 package com.snaggly.ksw_toolkit.gui.viewmodels
 
 import android.app.Application
-import android.content.Context
-import android.net.Uri
 import android.os.ParcelFileDescriptor
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import com.snaggly.ksw_toolkit.IKSWToolKitService
-import com.snaggly.ksw_toolkit.R
-import com.snaggly.ksw_toolkit.core.config.ConfigManager
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
-import com.snaggly.ksw_toolkit.util.list.eventtype.EventMode
 import java.io.*
-import java.net.URI
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-    fun exportSettings(context: Context, coreServiceClient: IKSWToolKitService, uri: Uri) {
-        val fileWriter = FileWriter(context.contentResolver.openFileDescriptor(uri, "w")?.fileDescriptor)
+    fun exportSettings(parcelFileDescriptor: ParcelFileDescriptor?, coreServiceClient: IKSWToolKitService) {
+        val fileWriter = FileWriter(parcelFileDescriptor?.fileDescriptor)
         fileWriter.write(coreServiceClient.config)
         fileWriter.close()
+        parcelFileDescriptor?.close()
     }
-    fun importSettings(context: Context, coreServiceClient: IKSWToolKitService, uri: Uri) {
-        val fileReader = FileReader(context.contentResolver.openFileDescriptor(uri, "r")?.fileDescriptor)
+    fun importSettings(parcelFileDescriptor: ParcelFileDescriptor?, coreServiceClient: IKSWToolKitService) : Boolean {
+        val fileReader = FileReader(parcelFileDescriptor?.fileDescriptor)
         val jsonLines = fileReader.readLines()
         fileReader.close()
         if (jsonLines.isEmpty()) {
-            Toast.makeText(context, context.getString(R.string.empty_or_unreadable_file), Toast.LENGTH_SHORT).show()
+            return false
         }
         val json = jsonLines.flatten()
         if (json == "") {
-            Toast.makeText(context, context.getString(R.string.empty_or_unreadable_file), Toast.LENGTH_SHORT).show()
+            return false
         }
 
         coreServiceClient.config = json
+        parcelFileDescriptor?.close()
+        return true
     }
 
     fun initializeServiceOptions(coreServiceClient: CoreServiceClient) {
