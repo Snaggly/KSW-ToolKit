@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.WindowInsetsCompat.Type.navigationBars
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -137,6 +138,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startApp() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
         mFragManager = supportFragmentManager
         initViewElements()
@@ -148,7 +150,9 @@ class MainActivity : AppCompatActivity() {
                 return@registerForActivityResult
             try {
                 val service = coreServiceClient.coreService ?: throw Exception("Service object missing")
-                mainViewModel.importSettings(this, service, it)
+                if (!mainViewModel.importSettings(contentResolver.openFileDescriptor(it, "r"), service)) {
+                    Toast.makeText(this, getString(R.string.empty_or_unreadable_file), Toast.LENGTH_SHORT).show()
+                }
             }
             catch (e: Exception) {
                 runOnUiThread {
@@ -161,7 +165,7 @@ class MainActivity : AppCompatActivity() {
                 return@registerForActivityResult
             try {
                 val service = coreServiceClient.coreService ?: throw Exception("Service object missing")
-                mainViewModel.exportSettings(this, service, it)
+                mainViewModel.exportSettings(contentResolver.openFileDescriptor(it, "w"), service)
             }
             catch (e: Exception) {
                 runOnUiThread {
