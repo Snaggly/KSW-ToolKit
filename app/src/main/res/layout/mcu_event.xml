@@ -8,28 +8,40 @@
     android:background="@drawable/ksw_id7_itme_select_bg_normal"
     android:backgroundTint="@color/cardview_dark_background">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/mcuEventName"
+        <ImageButton
+            android:id="@+id/mcuEventRemoveFromFilterBtn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/baseline_indeterminate_check_box_24"
+            android:backgroundTint="@color/red_btn_selector"
+            android:visibility="gone"
+            android:contentDescription="Deletes filter" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/mcuDataString"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/mcuEventName"
-            android:layout_alignParentStart="true"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/mcuEventName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/mcuDataString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

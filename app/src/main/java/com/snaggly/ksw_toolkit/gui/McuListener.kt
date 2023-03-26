@@ -3,9 +3,11 @@ package com.snaggly.ksw_toolkit.gui
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,20 +16,22 @@ import com.snaggly.ksw_toolkit.IMcuListener
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import com.snaggly.ksw_toolkit.gui.viewmodels.McuListenerViewModel
+import com.snaggly.ksw_toolkit.util.list.mcu.McuData
 import java.lang.NumberFormatException
 
 class McuListener(private val coreServiceClient: CoreServiceClient) : Fragment() {
 
     private lateinit var viewModel: McuListenerViewModel
     private lateinit var mcuEventRV: RecyclerView
+    private lateinit var mcuEventFilterRV: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.mcu_listener_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(McuListenerViewModel::class.java)
         initElements()
     }
@@ -42,10 +46,60 @@ class McuListener(private val coreServiceClient: CoreServiceClient) : Fragment()
         super.onPause()
     }
 
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == 1) {
+            viewModel.getLastSelectedEvent()?.let { addFilterElement(it) }
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    private fun addFilterElement(mcuData: McuData) {
+        if (!viewModel.mcuFilter.contains(mcuData))
+            viewModel.mcuFilter.add(mcuData)
+        viewModel.addFilterEntryToAdapter(mcuData)
+    }
+
     private fun initElements() {
         mcuEventRV = requireView().findViewById(R.id.McuEventsRV);
         mcuEventRV.layoutManager = LinearLayoutManager(context)
         mcuEventRV.adapter = viewModel.getMcuEventAdapter()
+
+        mcuEventFilterRV = requireView().findViewById(R.id.filterListRV);
+        mcuEventFilterRV.layoutManager = LinearLayoutManager(context)
+        mcuEventFilterRV.adapter = viewModel.getMcuEventFilterAdapter()
+
+        val filterNoticeTV = requireView().findViewById<TextView>(R.id.noFiltersNoticeTV).apply {
+            viewModel.filterListChangedObserver = {
+                visibility = if (mcuEventFilterRV.visibility == View.GONE || viewModel.mcuFilter.size > 0)
+                    View.GONE
+                else
+                    View.VISIBLE
+            }
+        }
+
+        requireView().findViewById<Button>(R.id.showFiltersBtn).apply {
+            setOnClickListener {
+                if (mcuEventFilterRV.visibility == View.GONE) {
+                    mcuEventFilterRV.visibility = View.VISIBLE
+                    this.setText(R.string.hide_filters)
+                    filterNoticeTV.visibility = if (viewModel.mcuFilter.size > 0)
+                        View.GONE
+                    else
+                        View.VISIBLE
+                }
+                else {
+                    mcuEventFilterRV.visibility = View.GONE
+                    this.setText(R.string.show_filters)
+                    filterNoticeTV.visibility = View.GONE
+                }
+            }
+        }
+
+        requireView().findViewById<Button>(R.id.clearMcuEventsBtn).apply {
+            setOnClickListener {
+                viewModel.clearEvents()
+            }
+        }
 
         //Debug
         val cmdInput = requireView().findViewById<TextInputEditText>(R.id.cmdTypeEditTxt)
@@ -91,8 +145,11 @@ class McuListener(private val coreServiceClient: CoreServiceClient) : Fragment()
                 }
 
                 val eventPName = eventName ?: "Unknown Event"
+                val mcuData = McuData(eventPName, cmdType, data)
+                if (viewModel.mcuFilter.contains(mcuData))
+                    return
                 requireActivity().runOnUiThread {
-                    viewModel.addEntryToAdapter("$eventPName - $cmdType", viewModel.dataBytesToString(data))
+                    viewModel.addEntryToAdapter(mcuData)
                 }
             }
         }

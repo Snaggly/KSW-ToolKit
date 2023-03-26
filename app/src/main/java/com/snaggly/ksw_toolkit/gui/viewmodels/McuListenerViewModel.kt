@@ -4,28 +4,47 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.snaggly.ksw_toolkit.util.adapters.McuEventRVAdapter
+import com.snaggly.ksw_toolkit.util.list.mcu.McuData
 
 class McuListenerViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var mcuEventRVAdapter: McuEventRVAdapter = McuEventRVAdapter()
+    private var mcuEventRVAdapter: McuEventRVAdapter = McuEventRVAdapter(null)
+    private var mcuEventFilterRVAdapter: McuEventRVAdapter = McuEventRVAdapter { mcuData ->
+        if (mcuData == null)
+            return@McuEventRVAdapter
+        mcuFilter.remove(mcuData)
+        removeFilterEntryFromAdapter(mcuData)
+    }
+
+    val mcuFilter = ArrayList<McuData>()
+    var filterListChangedObserver : (() -> Unit)? = null
+
+    fun getLastSelectedEvent() : McuData? {
+        return mcuEventRVAdapter.lastSelectedMcuData
+    }
 
     fun getMcuEventAdapter(): RecyclerView.Adapter<out RecyclerView.ViewHolder> {
         return mcuEventRVAdapter
     }
-
-    fun addEntryToAdapter(eventName: String, dataString: String) {
-        mcuEventRVAdapter.addNewEntry(eventName, dataString)
+    fun getMcuEventFilterAdapter(): RecyclerView.Adapter<out RecyclerView.ViewHolder> {
+        return mcuEventFilterRVAdapter
     }
 
-    fun dataBytesToString(data: ByteArray): String {
-        var result = ""
-        if (data.isEmpty())
-            return result
-        for (i in 0..data.size - 2) {
-            result += data[i].toString(16) + "-"
-        }
-        result += data[data.size - 1].toString(16)
+    fun addEntryToAdapter(mcuEvent: McuData) {
+        mcuEventRVAdapter.addNewEntry(mcuEvent)
+    }
 
-        return result
+    fun addFilterEntryToAdapter(mcuEvent: McuData) {
+        mcuEventFilterRVAdapter.addNewEntry(mcuEvent)
+        filterListChangedObserver?.invoke()
+    }
+
+    fun clearEvents() {
+        mcuEventRVAdapter.clear()
+    }
+
+    private fun removeFilterEntryFromAdapter(mcuEvent: McuData) {
+        mcuEventFilterRVAdapter.removeEntry(mcuEvent)
+        filterListChangedObserver?.invoke()
     }
 }

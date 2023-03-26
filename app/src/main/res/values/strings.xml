@@ -157,4 +157,8 @@
     <string name="zlink_auto_theme">ZLink Auto Theme</string>
     <string name="automatically_sets_the_android_s_dark_light_theme_given_by_following_options">Automatically sets the Android\'s dark/light theme given by following options.</string>
     <string name="when_headlights_turn_on">When headlights turn on:</string>
+    <string name="show_filters">Show Filters</string>
+    <string name="hide_filters">Hide Filters</string>
+    <string name="clear">Clear</string>
+    <string name="no_filters_set">No filters set</string>
 </resources>
