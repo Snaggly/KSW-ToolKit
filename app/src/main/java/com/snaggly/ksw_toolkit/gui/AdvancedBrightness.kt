@@ -8,24 +8,29 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
-import androidx.core.view.children
-import androidx.core.view.isVisible
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.snaggly.ksw_toolkit.IAutoTimeListener
-import com.snaggly.ksw_toolkit.IMcuListener
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
 import java.util.*
 
 class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() {
+    private enum class Mode { Off, TimeBased, USBSensorBased }
+
     private lateinit var enableAdvBrightnessTimeSW : SwitchCompat
     private lateinit var enableAdvBrightnessUSBSW : SwitchCompat
+
     private lateinit var advBrightnessTimeRoot : LinearLayout
+    private lateinit var advBrightnessTimeSetRoot : CardView
+
+    private lateinit var autoTimesCheckBox: CheckBox
     private lateinit var sunriseTimeEditText: EditText
     private lateinit var sunsetTimeEditText: EditText
-    private lateinit var autoTimesCheckBox: CheckBox
     private lateinit var dayBrightnessPercentageTV : TextView
     private lateinit var dayBrightnessSeekBar: SeekBar
     private lateinit var dayBrightnessHLPercentageTV : TextView
@@ -34,6 +39,11 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
     private lateinit var nightBrightnessSeekBar: SeekBar
     private lateinit var nightBrightnessHLPercentageTV : TextView
     private lateinit var nightBrightnessHLSeekBar: SeekBar
+
+    private lateinit var enterAnimation : Animation
+    private lateinit var exitAnimation : Animation
+
+    private var mode = Mode.Off
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.adv_brightness_fragment, container, false)
@@ -54,6 +64,7 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
         super.onResume()
 
         val advBriController = coreServiceClient.coreService?.advancedBrightnessController
+
         enableAdvBrightnessTimeSW.isChecked = advBriController?.advBri_IsTimeBased?: false
         enableAdvBrightnessUSBSW.isChecked = advBriController?.advBri_IsUSBBased?: false
         sunriseTimeEditText.setText(advBriController?.advBri_SunriseAt?: "06:00")
@@ -71,6 +82,13 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
         dayBrightnessHLPercentageTV.text = "${dayBrightnessHLSeekBar.progress}%"
         nightBrightnessPercentageTV.text = "${nightBrightnessSeekBar.progress}%"
         nightBrightnessHLPercentageTV.text = "${nightBrightnessHLSeekBar.progress}%"
+
+        mode = if (enableAdvBrightnessTimeSW.isChecked)
+            Mode.TimeBased
+        else if (enableAdvBrightnessUSBSW.isChecked)
+            Mode.USBSensorBased
+        else
+            Mode.Off
 
         switchMode()
 
@@ -95,12 +113,15 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
     private fun initElements() {
         enableAdvBrightnessTimeSW = requireView().findViewById(R.id.enableAdvBrightnessTimeSW)
         enableAdvBrightnessUSBSW = requireView().findViewById(R.id.enableAdvBrightnessUSBSW)
-        advBrightnessTimeRoot = requireView().findViewById(R.id.adv_brightness_time_fragment_ll_root)
+
         sunriseTimeEditText = requireView().findViewById(R.id.sunriseTimeET)
         sunriseTimeEditText.inputType = InputType.TYPE_NULL
         sunsetTimeEditText = requireView().findViewById(R.id.sunsetTimeET)
         sunsetTimeEditText.inputType = InputType.TYPE_NULL
         autoTimesCheckBox = requireView().findViewById(R.id.autoTimesCheckBox)
+
+        advBrightnessTimeRoot = requireView().findViewById(R.id.adv_brightness_time_fragment_ll_root)
+        advBrightnessTimeSetRoot = requireView().findViewById(R.id.adv_brightness_time_fragment_cv_root)
         dayBrightnessPercentageTV = requireView().findViewById(R.id.dayBrightnessPercentageTV)
         dayBrightnessSeekBar = requireView().findViewById(R.id.dayBrightnessSeekBar)
         dayBrightnessHLPercentageTV = requireView().findViewById(R.id.dayBrightnessHLPercentageTV)
@@ -109,11 +130,29 @@ class AdvancedBrightness(val coreServiceClient: CoreServiceClient) : Fragment() 
         nightBrightnessSeekBar = requireView().findViewById(R.id.nightBrightnessSeekBar)
         nightBrightnessHLPercentageTV = requireView().findViewById(R.id.nightBrightnessHLPercentageTV)
         nightBrightnessHLSeekBar = requireView().findViewById(R.id.nightBrightnessHLSeekBar)
+
+        enterAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_enter_right_left)
+        exitAnimation = AnimationUtils.loadAnimation(context, R.anim.slide_exit_right_left)
     }
 
     private fun switchMode() {
-        for (child in advBrightnessTimeRoot.children) {
-            child.isVisible = enableAdvBrightnessTimeSW.isChecked
+        if (enableAdvBrightnessTimeSW.isChecked) {
+            if (mode == Mode.Off) {
+                advBrightnessTimeSetRoot.startAnimation(enterAnimation)
+                advBrightnessTimeRoot.startAnimation(enterAnimation)
+                mode = Mode.TimeBased
+            }
+            advBrightnessTimeSetRoot.visibility = View.VISIBLE
+            advBrightnessTimeRoot.visibility = View.VISIBLE
+        }
+        else {
+            if (mode == Mode.TimeBased) {
+                advBrightnessTimeSetRoot.startAnimation(exitAnimation)
+                advBrightnessTimeRoot.startAnimation(exitAnimation)
+                mode = Mode.Off
+            }
+            advBrightnessTimeSetRoot.visibility = View.INVISIBLE
+            advBrightnessTimeRoot.visibility = View.INVISIBLE
         }
     }
 

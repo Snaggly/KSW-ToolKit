@@ -80,7 +80,7 @@
     <string name="give_tasker_read_logs_permission">Give Tasker READ_LOGS permission</string>
     <string name="intercept_mcucommmands">Intercept McuCommmands</string>
     <string name="enable_media_tel_button_handling">Media-Button Hack</string>
-    <string name="night_brightness">Night Brightness</string>
+    <string name="night_brightness">Night brightness</string>
     <string name="sound_restorer">Sound Restorer</string>
     <string name="reset_defaults">Reset Defaults</string>
     <string name="telephone_pickup">Telephone PickUp</string>
@@ -122,7 +122,7 @@
     <string name="tasker_access_blocked">Tasker external access disabled</string>
     <string name="tasker_no_permission">Tasker no permitted</string>
     <string name="reset_default_dialog_message">All mappings will reset to defaults. Continue?</string>
-    <string name="auto_dark_theme_descpr">Automatically sets Android to Dark/Light theme when headlights toggle. MCU needs to support headlight detection! To determine if your System is compatible, go to MCU listener, turn headlights on and off and check if Light Events show up</string>
+    <string name="auto_dark_theme_descpr">Automatically sets Dark/Light theme by daytime or when headlights toggle. For headlight detection, MCU needs to be supported! To determine if your System is compatible, go to MCU listener, turn headlights on and off and check if Light Events show up.</string>
     <string name="auto_volume_descpr">Adjusts Android\'s media volume depending on current driving speed.</string>
     <string name="max_volume_at_boot_descpr">Maximizes Android\'s media volume after successful boot.</string>
     <string name="sound_restorer_descpr">Resets the MCU sound source to Android on every screen switch. This makes it possible to hear Android on OEM screen.</string>
@@ -144,9 +144,17 @@
     <string name="enable_usb_light_sensor">Enable USB light sensor</string>
     <string name="sunrise">Sunrise:</string>
     <string name="sunset">Sunset:</string>
-    <string name="determine_times_automatically">Determine times automatically</string>
-    <string name="daylight_brightness">Daylight Brightness:</string>
-    <string name="daylight_brightness_headlight">Daylight Brightness + Headlight:</string>
-    <string name="night_brightness_headlight">Night Brightness + Headlight:</string>
-    <string name="advanced_brightness">Advanced Brightness</string>
+    <string name="determine_times_automatically">Automatic detection</string>
+    <string name="daylight_brightness">Daylight brightness:</string>
+    <string name="daylight_brightness_headlight">Daylight brightness + Headlight:</string>
+    <string name="night_brightness_headlight">Night brightness + Headlight:</string>
+    <string name="advanced_brightness">Advanced brightness</string>
+    <string name="nighttime_brightness">Nighttime brightness:</string>
+    <string name="connect_to_service">Connect to Service</string>
+    <string name="by_headlights">By headlights</string>
+    <string name="by_nighttime">By nighttime</string>
+    <string name="automatically_sets_the_map_theme_to_dark_light_in_zlink_given_by_following_options_this_only_works_for_android_auto_carplay_will_depend_on_your_phone">Automatically sets the map theme to dark/light in ZLink given by following options. This only works for Android Auto! CarPlay will depend on your phone.</string>
+    <string name="zlink_auto_theme">ZLink Auto Theme</string>
+    <string name="automatically_sets_the_android_s_dark_light_theme_given_by_following_options">Automatically sets the Android\'s dark/light theme given by following options.</string>
+    <string name="when_headlights_turn_on">When headlights turn on:</string>
 </resources>
