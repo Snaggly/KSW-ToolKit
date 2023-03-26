@@ -5,9 +5,6 @@ import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +18,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.snaggly.ksw_toolkit.R
 import com.snaggly.ksw_toolkit.core.service.adb.AdbServiceConnection
 import com.snaggly.ksw_toolkit.core.service.helper.CoreServiceClient
-import com.snaggly.ksw_toolkit.core.service.helper.ServiceAliveCheck
 import com.snaggly.ksw_toolkit.gui.viewmodels.ToolKitViewModel
 import com.snaggly.ksw_toolkit.util.github.DownloadController
 import com.snaggly.ksw_toolkit.util.github.GitHubRelease
@@ -56,7 +52,6 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
     private var latestServiceGitHubRelease : GitHubRelease? = null
     //private var latestClientGitHubRelease : GitHubRelease? = null
 
-    private val serviceAliveObserver: Observer<Boolean>
     private val serviceConnectedObserver: Observer<Boolean>
 
     private var isServiceInstalled = false
@@ -72,26 +67,11 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
             }
         }
 
-    companion object {
-        var ServiceRunning = false
-        var ServiceConnected = false
-    }
-
     init {
-        serviceAliveObserver = Observer<Boolean> { t ->
-            if (t != ServiceRunning) {
-                ServiceRunning = t
-                resetStatus()
-            }
-        }
-
         serviceConnectedObserver = Observer<Boolean> { t ->
             requireActivity().runOnUiThread {
-                if (t != ServiceConnected) {
-                    ServiceConnected = t
-                    resetConnection()
-                    mViewModel.checkService(requireContext())
-                }
+                resetStatus()
+                mViewModel.checkService(requireContext())
             }
         }
     }
@@ -112,16 +92,13 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        ServiceAliveCheck.serviceAliveObservers.add(serviceAliveObserver)
         coreServiceClient.clientObservers.add(serviceConnectedObserver)
         resetStatus()
-        resetConnection()
         mViewModel.checkService(requireContext())
     }
 
     override fun onPause() {
         super.onPause()
-        ServiceAliveCheck.serviceAliveObservers.remove(serviceAliveObserver)
         coreServiceClient.clientObservers.remove(serviceConnectedObserver)
     }
 
@@ -142,7 +119,7 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                 versionLiteralTV.visibility = View.GONE
                 isInInstallMode = true
             }
-            else if (ServiceRunning) {
+            else if (CoreServiceClient.isConnected) {
                 isServiceInstalled = true
                 startStopServiceBtn.text = resources.getText(R.string.stop_service)
                 runningSymbol.background = ContextCompat.getDrawable(requireContext(),R.mipmap.green_button)
@@ -157,30 +134,27 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                 versionTextView.text = serviceVersion.toString()
                 isInInstallMode = false
             }
+            if (CoreServiceClient.isConnected) {
+                try {
+                    startAtBootSwitch.isChecked = mViewModel.getStartAtBootOption()
+                } catch (e : Exception) {
+                    Toast.makeText(requireContext(), "${requireActivity().resources.getText(R.string.error_in_reading_service)}\n$e", Toast.LENGTH_LONG).show()
+                }
+                startAtBootSwitch.visibility = View.VISIBLE
+                startAtBootSwitchText.text = getString(R.string.start_at_boot)
+                screenOffBtn.visibility = View.VISIBLE
+                openSourceLayout.visibility = View.VISIBLE
+                openSourceTV.visibility = View.VISIBLE
+            } else {
+                startAtBootSwitch.visibility = View.GONE
+                startAtBootSwitchText.text = getString(R.string.not_connected_to_service)
+                screenOffBtn.visibility = View.GONE
+                openSourceLayout.visibility = View.GONE
+                openSourceTV.visibility = View.GONE
+            }
             enableUsbDebuggingTextView.visibility = View.GONE
             if (mViewModel.isAdbDebuggingDisabled(requireContext()))
                 enableUsbDebuggingTextView.visibility = View.VISIBLE
-        }
-    }
-
-    private fun resetConnection() {
-        if (ServiceConnected) {
-            try {
-                startAtBootSwitch.isChecked = mViewModel.getStartAtBootOption()
-            } catch (e : Exception) {
-                Toast.makeText(requireContext(), "${requireActivity().resources.getText(R.string.error_in_reading_service)}\n$e", Toast.LENGTH_LONG).show()
-            }
-            startAtBootSwitch.visibility = View.VISIBLE
-            startAtBootSwitchText.text = getString(R.string.start_at_boot)
-            screenOffBtn.visibility = View.VISIBLE
-            openSourceLayout.visibility = View.VISIBLE
-            openSourceTV.visibility = View.VISIBLE
-        } else {
-            startAtBootSwitch.visibility = View.GONE
-            startAtBootSwitchText.text = getString(R.string.not_connected_to_service)
-            screenOffBtn.visibility = View.GONE
-            openSourceLayout.visibility = View.GONE
-            openSourceTV.visibility = View.GONE
         }
     }
 
@@ -295,7 +269,7 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
         }
 
         startStopServiceBtn.setOnClickListener {
-            if (!ServiceRunning) {
+            if (!CoreServiceClient.isConnected) {
                 try{
                     AdbServiceConnection.startThisService(requireContext())
                     mViewModel.checkService(requireContext())

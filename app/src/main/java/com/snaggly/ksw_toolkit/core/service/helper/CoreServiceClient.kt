@@ -25,6 +25,8 @@ class CoreServiceClient {
         const val packageName = "com.snaggly.wits.ksw_toolkit.service"
         const val className = "com.snaggly.ksw_toolkit.core.service.CoreService"
 
+        var isConnected = false
+
         fun getInstalledServiceVersion(context: Context) : String? {
             val packageInfo : PackageInfo?
             try {
@@ -81,6 +83,7 @@ class CoreServiceClient {
     var coreService: IKSWToolKitService? = null
         set(value) {
             field = value
+            isConnected = value != null
             clientObservers.forEach {
                 it.onChanged(field != null)
             }
