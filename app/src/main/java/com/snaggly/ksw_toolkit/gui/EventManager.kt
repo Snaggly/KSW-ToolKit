@@ -103,6 +103,7 @@ class EventManager(private val coreServiceClient: CoreServiceClient) : Fragment(
                 .setMessage(R.string.reset_default_dialog_message)
                 .setPositiveButton("OK") { _, _ ->
                     coreServiceClient.coreService?.setDefaultBtnLayout()
+                    mViewModel.reset()
                     initBtnClick()
                 }
                 .setNegativeButton("CANCEL", null)
