@@ -95,7 +95,7 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.SwitchCompat
-                        android:id="@+id/maxVolumeAtBootToggle"
+                        android:id="@+id/retainVolumeAtBootToggle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white" />
@@ -108,13 +108,13 @@
                             style="@style/switchTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/set_max_volume_at_boot" />
+                            android:text="@string/set_retain_volume_at_boot" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="16sp"
-                            android:text="@string/max_volume_at_boot_descpr" />
+                            android:text="@string/retain_volume_at_boot_descpr" />
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"

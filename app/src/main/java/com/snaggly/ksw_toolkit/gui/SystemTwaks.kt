@@ -11,8 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.SeekBar
-import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
@@ -30,7 +28,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private lateinit var shrinkTopBarSwitch: SwitchCompat
     private lateinit var autoThemeToggle: SwitchCompat
     private lateinit var autoVolumeSwitch: SwitchCompat
-    private lateinit var maxVolumeOnBootSwitch: SwitchCompat
+    private lateinit var retainVolumeOnBootSwitch: SwitchCompat
     private lateinit var giveTaskerLogcatPermBtn: Button
     private lateinit var soundRestorerToggle: SwitchCompat
     private lateinit var extraBtnHandleToggle: SwitchCompat
@@ -75,7 +73,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
     private fun initElements() {
         autoThemeToggle = requireView().findViewById(R.id.autoThemeToggle)
         autoVolumeSwitch = requireView().findViewById(R.id.autoVolumeToggle)
-        maxVolumeOnBootSwitch = requireView().findViewById(R.id.maxVolumeAtBootToggle)
+        retainVolumeOnBootSwitch = requireView().findViewById(R.id.retainVolumeAtBootToggle)
         hideTopBarSwitch = requireView().findViewById(R.id.hideTopBarToggle)
         hideTopBarLayout = requireView().findViewById(R.id.hideTopBarLayout)
         shrinkTopBarLayout = requireView().findViewById(R.id.shrinkTopBarLayout)
@@ -94,7 +92,7 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
         val config = ConfigManager.getConfigFromJson(json).systemOptions
         autoThemeToggle.isChecked = config.autoTheme ?: false
         autoVolumeSwitch.isChecked = config.autoVolume ?: false
-        maxVolumeOnBootSwitch.isChecked = config.maxVolume ?: false
+        retainVolumeOnBootSwitch.isChecked = config.retainVolume ?: false
         soundRestorerToggle.isChecked = config.soundRestorer ?: false
         extraBtnHandleToggle.isChecked = config.extraMediaButtonHandle ?: false
         if (sharedPref != null) {
@@ -129,9 +127,9 @@ class SystemTwaks(val coreServiceClient: CoreServiceClient) : Fragment() {
             }
         }
 
-        maxVolumeOnBootSwitch.setOnClickListener {
+        retainVolumeOnBootSwitch.setOnClickListener {
             try {
-                coreServiceClient.coreService?.systemOptionsController?.maxVolume = (it as SwitchCompat).isChecked
+                coreServiceClient.coreService?.systemOptionsController?.retainVolume = (it as SwitchCompat).isChecked
             } catch (exception: Exception) {
                 val alertExc =
                     AlertDialog.Builder(activity, R.style.alertDialogNight).setTitle("KSW-ToolKit-SystemTweaks")

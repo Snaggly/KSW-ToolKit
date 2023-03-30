@@ -6,7 +6,7 @@ class SystemOptions(
     var soundRestorer: Boolean? = false,
     var autoTheme: Boolean? = false,
     var autoVolume: Boolean? = false,
-    var maxVolume: Boolean? = false,
+    var retainVolume: Boolean? = false,
     var logMcuEvent: Boolean? = true,
     var interceptMcuCommand: Boolean? = true,
     var extraMediaButtonHandle: Boolean? = false,

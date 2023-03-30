@@ -52,7 +52,7 @@
     <string name="export_config">Export Config</string>
     <string name="restart_system">Restart System</string>
     <string name="assigned">Assigned</string>
-    <string name="set_max_volume_at_boot">Max Volume at Boot</string>
+    <string name="set_retain_volume_at_boot">Retain volume at Boot</string>
     <string name="auto_volume">Auto Volume</string>
     <string name="start_at_boot">Start at Boot</string>
     <string name="clear_boot_animation">Clear Boot Animation</string>
@@ -124,7 +124,7 @@
     <string name="reset_default_dialog_message">All mappings will reset to defaults. Continue?</string>
     <string name="auto_dark_theme_descpr">Automatically sets Dark/Light theme by daytime or when headlights toggle. For headlight detection, MCU needs to be supported! To determine if your System is compatible, go to MCU listener, turn headlights on and off and check if Light Events show up.</string>
     <string name="auto_volume_descpr">Adjusts Android\'s media volume depending on current driving speed.</string>
-    <string name="max_volume_at_boot_descpr">Maximizes Android\'s media volume after successful boot.</string>
+    <string name="retain_volume_at_boot_descpr">Retains all previously set audio volumes after successful boot.</string>
     <string name="sound_restorer_descpr">Resets the MCU sound source to Android on every screen switch. This makes it possible to hear Android on OEM screen.</string>
     <string name="additional_media_btn_handle_descpr">Enables some extra hardware buttons. For example on BMW iDrive the Buttons \"Media\" and \"Tel\" will be enabled on Android side. They will be detected as \"MODE\" and \"PHONE\" respectively.</string>
     <string name="tablet_mode_descpr">Tweaks system DPI to match that of an Android Tablet device. Allows certain Apps to load up in Tablet UI.</string>

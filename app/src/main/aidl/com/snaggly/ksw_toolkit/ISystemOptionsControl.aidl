@@ -22,8 +22,8 @@ interface ISystemOptionsControl {
     boolean getAutoVolume();
     void setAutoVolume(boolean value);
 
-    boolean getMaxVolume();
-    void setMaxVolume(boolean value);
+    boolean getRetainVolume();
+    void setRetainVolume(boolean value);
 
     boolean getLogMcuEvent();
     void setLogMcuEvent(boolean value);
