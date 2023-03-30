@@ -14,6 +14,8 @@ class McuCommandsList(name: String, icon: Drawable, command: McuCommandsEnum) : 
             result.add(McuCommandsList("Turn Screen Off", ContextCompat.getDrawable(context,R.drawable.ic_baseline_web_asset_off_64)!!, McuCommandsEnum.ScreenOff))
             result.add(McuCommandsList("Increase Brightness", ContextCompat.getDrawable(context,R.drawable.ic_baseline_brightness_high_64)!!, McuCommandsEnum.BrightnessInc))
             result.add(McuCommandsList("Decrease Brightness", ContextCompat.getDrawable(context,R.drawable.ic_baseline_brightness_low_64)!!, McuCommandsEnum.BrightnessDec))
+            result.add(McuCommandsList("Increase Media Volume", ContextCompat.getDrawable(context,R.drawable.ic_baseline_volume_up_36)!!, McuCommandsEnum.MediaVolumeInc))
+            result.add(McuCommandsList("Decrease Media Volume", ContextCompat.getDrawable(context,R.drawable.ic_baseline_volume_down_36)!!, McuCommandsEnum.MediaVolumeDec))
             result.add(McuCommandsList("Switch to OEM", ContextCompat.getDrawable(context,R.drawable.nbt_src_icon_carinfo)!!, McuCommandsEnum.CarInfo))
             result.add(McuCommandsList("Open Radio", ContextCompat.getDrawable(context,R.drawable.ic_baseline_radio_64)!!, McuCommandsEnum.Radio))
             result.add(McuCommandsList("Open Front Cam", ContextCompat.getDrawable(context,R.drawable.ic_baseline_camera_alt_64)!!, McuCommandsEnum.F_CAM))

@@ -2,6 +2,8 @@ package com.snaggly.ksw_toolkit.util.list.mcu
 
 enum class McuCommandsEnum {
     ScreenOff,
+    MediaVolumeInc,
+    MediaVolumeDec,
     BrightnessInc,
     BrightnessDec,
     CarInfo,
