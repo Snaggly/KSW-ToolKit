@@ -65,7 +65,7 @@
             <Button
                 android:id="@+id/soundRestorerPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:focusedByDefault="true"
                 android:text="@string/toolkit"
@@ -75,7 +75,7 @@
             <Button
                 android:id="@+id/eventManagerPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:enabled="false"
                 android:text="@string/event_manager_btntext"
@@ -85,7 +85,7 @@
             <Button
                 android:id="@+id/systemTweaksPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:enabled="false"
                 android:text="@string/system_tweaks_btntext"
@@ -95,7 +95,7 @@
             <Button
                 android:id="@+id/advancedBrightnessPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:enabled="false"
                 android:text="@string/advanced_brightness"
@@ -105,7 +105,7 @@
             <Button
                 android:id="@+id/mcuListenerPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:enabled="false"
                 android:text="@string/mcu_listener"
@@ -115,7 +115,7 @@
             <Button
                 android:id="@+id/configPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:enabled="false"
                 android:text="@string/import_export_config"
@@ -125,7 +125,7 @@
             <Button
                 android:id="@+id/adbShellPaneBtn"
                 android:layout_width="match_parent"
-                android:layout_height="69dp"
+                android:layout_height="59dp"
                 android:background="@drawable/btn_selector"
                 android:text="@string/adb_shell_btntext"
                 android:textColor="@color/main_btn_text_selector"

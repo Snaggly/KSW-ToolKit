@@ -325,11 +325,11 @@ class ToolKit(private val coreServiceClient: CoreServiceClient) : Fragment() {
                             requireActivity().runOnUiThread{
                                 progressSpinner.visibility = View.GONE
                                 newerVersionTextView.text = remoteServiceVersion.toString()
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "${getString(R.string.new_service_version_found)} $remoteServiceVersion",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "${getString(R.string.new_service_version_found)} $remoteServiceVersion",
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 isInInstallMode = true
                             }
                         } else {

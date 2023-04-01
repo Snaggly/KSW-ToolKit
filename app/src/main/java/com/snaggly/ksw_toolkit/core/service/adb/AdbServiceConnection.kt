@@ -15,7 +15,7 @@ object AdbServiceConnection {
 
     fun startThisService(context: Context) {
         AdbManager.sendCommand("am startservice --user 0 ${CoreServiceClient.packageName}/${CoreServiceClient.className}", context)
-        //AdbManager.sendCommand("am start-foreground-service com.snaggly.wits.ksw_toolkit.service/com.snaggly.ksw_toolkit.core.service.CoreService", context)
+        //AdbManager.sendCommand("am startservice --user 0 com.snaggly.wits.ksw_toolkit.service/com.snaggly.ksw_toolkit.core.service.CoreService", context)
     }
 
     fun stopThisService(context: Context) {
