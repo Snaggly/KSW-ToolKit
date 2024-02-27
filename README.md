@@ -1,5 +1,5 @@
-# Notice: This Repository is will be longer maintained!
-The focus will be spent on a much more improved Version available : https://play.google.com/store/apps/details?id=tech.snaggle.ksw_toolkit
+# Notice: This Repository is will no longer be maintained!
+Improved and richer Version available here : https://play.google.com/store/apps/details?id=tech.snaggle.ksw_toolkit
 This version has been built from the ground up with the focus on stability expandibility in new features. You can still use this repository to submit issues if any new arise.
 
 # KSW-ToolKit
